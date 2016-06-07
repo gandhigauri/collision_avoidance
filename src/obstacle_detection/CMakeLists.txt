@@ -9,10 +9,12 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
+  pcl_conversions 
+  pcl_ros
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -131,14 +133,16 @@ include_directories(
 ## Declare a C++ executable
 # add_executable(obstacle_detection_node src/obstacle_detection_node.cpp)
 
+add_executable(ground_plane_calibration src/ground_plane_calibration.cpp)
+
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(obstacle_detection_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(obstacle_detection_node
-#   ${catkin_LIBRARIES}
-# )
+ target_link_libraries(ground_plane_calibration
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
