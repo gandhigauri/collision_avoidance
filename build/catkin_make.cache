@@ -1,0 +1,2 @@
+
+-DCATKIN_DEVEL_PREFIX=/home/gauri/multirobotcolvoid/collision_avoidance/devel -DCMAKE_INSTALL_PREFIX=/home/gauri/multirobotcolvoid/collision_avoidance/install -G Unix Makefiles
