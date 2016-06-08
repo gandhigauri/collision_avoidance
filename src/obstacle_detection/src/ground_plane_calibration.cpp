@@ -2,25 +2,32 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <boost/foreach.hpp>
 #include <pcl/point_types.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/point_cloud.h>
+
+//typedef pcl::PointXYZ pcl_type;
 
 class ground_plane_calibration
 {
 	ros::NodeHandle nh;
 	ros::Subscriber sub;
 	ros::Publisher pub;
-	int check = 0;
+	sensor_msgs::PointCloud2 pcl_msg;
+	pcl::PointCloud<pcl::PointXYZ> cloud;
+	pcl::PCLPointCloud2 pts;
 public:
 	ground_plane_calibration()
 	{
 		sub = nh.subscribe("/camera/depth_registered/points", 1000, &ground_plane_calibration::points_callback, this);
-		pub = nh.advertise<sensor_msgs::PointCloud2>("ground_plane", 1000);
+		//pub = nh.advertise<pcl_type>("ground_plane", 1000);
 	}
 	void points_callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 	{
-		check = 1;
-		pub.publish(*msg);
-		//BOOST_FOREACH (const pcl::PointXYZ& pt, msg->data)
-		//	std::cout<<"gg";//"\t(%f, %f, %f)\n"<<	pt.x << pt.y << pt.z;
+		pcl_msg = *msg;
+  		pcl_conversions::toPCL(pcl_msg,pts);
+  		pcl::fromPCLPointCloud2(pts,cloud);
+		BOOST_FOREACH (const pcl::PointXYZ& pt, cloud.points)
+			std::cout<<	pt.x << " , "<< pt.y <<" , "<< pt.z << std::endl;
 	}
 };
 
