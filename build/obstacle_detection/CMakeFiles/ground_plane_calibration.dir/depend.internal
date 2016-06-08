@@ -67,9 +67,13 @@ obstacle_detection/CMakeFiles/ground_plane_calibration.dir/src/ground_plane_cali
  /opt/ros/indigo/include/sensor_msgs/Image.h
  /opt/ros/indigo/include/sensor_msgs/PointCloud2.h
  /opt/ros/indigo/include/sensor_msgs/PointField.h
+ /opt/ros/indigo/include/std_msgs/Float32MultiArray.h
  /opt/ros/indigo/include/std_msgs/Header.h
+ /opt/ros/indigo/include/std_msgs/MultiArrayDimension.h
+ /opt/ros/indigo/include/std_msgs/MultiArrayLayout.h
  /usr/include/eigen3/Eigen/Cholesky
  /usr/include/eigen3/Eigen/Core
+ /usr/include/eigen3/Eigen/Dense
  /usr/include/eigen3/Eigen/Eigen2Support
  /usr/include/eigen3/Eigen/Eigenvalues
  /usr/include/eigen3/Eigen/Geometry
@@ -287,6 +291,9 @@ obstacle_detection/CMakeFiles/ground_plane_calibration.dir/src/ground_plane_cali
  /usr/include/pcl-1.7/pcl/console/print.h
  /usr/include/pcl-1.7/pcl/conversions.h
  /usr/include/pcl-1.7/pcl/exceptions.h
+ /usr/include/pcl-1.7/pcl/filters/boost.h
+ /usr/include/pcl-1.7/pcl/filters/filter.h
+ /usr/include/pcl-1.7/pcl/filters/impl/filter.hpp
  /usr/include/pcl-1.7/pcl/for_each_type.h
  /usr/include/pcl-1.7/pcl/impl/pcl_base.hpp
  /usr/include/pcl-1.7/pcl/impl/point_types.hpp
