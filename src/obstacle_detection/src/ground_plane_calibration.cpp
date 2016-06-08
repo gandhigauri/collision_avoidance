@@ -73,7 +73,6 @@ public:
       	FILE* yaml = fopen(groundplanedatafile.c_str(), "w");
     	fprintf(yaml, "alpha: %f\nbeta: %f\ngamma: %f\n", coeff_vector(0), coeff_vector(1), coeff_vector(2));
 		fclose(yaml);
- 		//ROS_INFO_STREAM("written to .yaml file");
 
 		//stop publishing after calibration and writing to yaml file
 		ros::shutdown();
@@ -86,6 +85,6 @@ int main(int argc, char **argv)
 	ros::init(argc,argv,"ground_plane_calibration");
 	ground_plane_calibration gp_calib;
 	while (ros::ok())
-			ros::spin();
+		ros::spin();
 	return 0;
 }
