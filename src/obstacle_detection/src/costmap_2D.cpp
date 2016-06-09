@@ -42,14 +42,14 @@ void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
 
 void costmap_2D::plane_coeff_cb()
 {
- //ros::param("alpha", alpha);
- //ros::param("beta",beta);
- //ros::param("gamma",gamma);
+ //ros::param::get("alpha", alpha);
+ //ros::param::get("beta",beta);
+ ros::param::get("gamma",gamma);
 }
 
 float calculate_height()
 {
-	
+
 }
 int main (int argc, char **argv)
 {

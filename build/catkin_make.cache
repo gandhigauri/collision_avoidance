@@ -1,2 +1,0 @@
-obstacle_detection
--DCATKIN_DEVEL_PREFIX=/home/turtlebot/summer_project/collision_avoidance/devel -DCMAKE_INSTALL_PREFIX=/home/turtlebot/summer_project/collision_avoidance/install -G Unix Makefiles
