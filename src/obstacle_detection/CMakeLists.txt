@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(obstacle_detection)
-
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -134,6 +136,7 @@ include_directories(
 # add_executable(obstacle_detection_node src/obstacle_detection_node.cpp)
 
 add_executable(ground_plane_calibration src/ground_plane_calibration.cpp)
+add_executable(costmap_2D src/costmap_2D.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -143,7 +146,9 @@ add_executable(ground_plane_calibration src/ground_plane_calibration.cpp)
  target_link_libraries(ground_plane_calibration
   ${catkin_LIBRARIES}
 )
-
+ target_link_libraries(costmap_2D
+  ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############

@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/gauri/multirobotcolvoid/collision_avoidance/src
+CMAKE_SOURCE_DIR = /home/turtlebot/summer_project/collision_avoidance/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/gauri/multirobotcolvoid/collision_avoidance/build
+CMAKE_BINARY_DIR = /home/turtlebot/summer_project/collision_avoidance/build
 
 # Utility rule file for dynamic_reconfigure_generate_messages_py.
 
@@ -56,10 +56,10 @@ obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build
 .PHONY : obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/build
 
 obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/clean:
-	cd /home/gauri/multirobotcolvoid/collision_avoidance/build/obstacle_detection && $(CMAKE_COMMAND) -P CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/cmake_clean.cmake
+	cd /home/turtlebot/summer_project/collision_avoidance/build/obstacle_detection && $(CMAKE_COMMAND) -P CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/cmake_clean.cmake
 .PHONY : obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/clean
 
 obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/depend:
-	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/gauri/multirobotcolvoid/collision_avoidance/src /home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection /home/gauri/multirobotcolvoid/collision_avoidance/build /home/gauri/multirobotcolvoid/collision_avoidance/build/obstacle_detection /home/gauri/multirobotcolvoid/collision_avoidance/build/obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/turtlebot/summer_project/collision_avoidance/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/turtlebot/summer_project/collision_avoidance/src /home/turtlebot/summer_project/collision_avoidance/src/obstacle_detection /home/turtlebot/summer_project/collision_avoidance/build /home/turtlebot/summer_project/collision_avoidance/build/obstacle_detection /home/turtlebot/summer_project/collision_avoidance/build/obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/depend
 

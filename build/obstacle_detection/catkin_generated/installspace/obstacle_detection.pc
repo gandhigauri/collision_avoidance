@@ -1,8 +1,8 @@
-prefix=/home/gauri/multirobotcolvoid/collision_avoidance/install
+prefix=/home/turtlebot/summer_project/collision_avoidance/install
 
 Name: obstacle_detection
 Description: Description of obstacle_detection
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/gauri/multirobotcolvoid/collision_avoidance/install/lib 
+Libs: -L/home/turtlebot/summer_project/collision_avoidance/install/lib 
 Requires: 

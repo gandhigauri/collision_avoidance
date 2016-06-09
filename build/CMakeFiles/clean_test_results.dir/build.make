@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/gauri/multirobotcolvoid/collision_avoidance/src
+CMAKE_SOURCE_DIR = /home/turtlebot/summer_project/collision_avoidance/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/gauri/multirobotcolvoid/collision_avoidance/build
+CMAKE_BINARY_DIR = /home/turtlebot/summer_project/collision_avoidance/build
 
 # Utility rule file for clean_test_results.
 
@@ -46,7 +46,7 @@ CMAKE_BINARY_DIR = /home/gauri/multirobotcolvoid/collision_avoidance/build
 include CMakeFiles/clean_test_results.dir/progress.make
 
 CMakeFiles/clean_test_results:
-	/usr/bin/python /opt/ros/indigo/share/catkin/cmake/test/remove_test_results.py /home/gauri/multirobotcolvoid/collision_avoidance/build/test_results
+	/usr/bin/python /opt/ros/indigo/share/catkin/cmake/test/remove_test_results.py /home/turtlebot/summer_project/collision_avoidance/build/test_results
 
 clean_test_results: CMakeFiles/clean_test_results
 clean_test_results: CMakeFiles/clean_test_results.dir/build.make
@@ -61,6 +61,6 @@ CMakeFiles/clean_test_results.dir/clean:
 .PHONY : CMakeFiles/clean_test_results.dir/clean
 
 CMakeFiles/clean_test_results.dir/depend:
-	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/gauri/multirobotcolvoid/collision_avoidance/src /home/gauri/multirobotcolvoid/collision_avoidance/src /home/gauri/multirobotcolvoid/collision_avoidance/build /home/gauri/multirobotcolvoid/collision_avoidance/build /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/turtlebot/summer_project/collision_avoidance/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/turtlebot/summer_project/collision_avoidance/src /home/turtlebot/summer_project/collision_avoidance/src /home/turtlebot/summer_project/collision_avoidance/build /home/turtlebot/summer_project/collision_avoidance/build /home/turtlebot/summer_project/collision_avoidance/build/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/clean_test_results.dir/depend
 

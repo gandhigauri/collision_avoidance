@@ -1,8 +1,8 @@
-# Install script for directory: /home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection
+# Install script for directory: /home/turtlebot/summer_project/collision_avoidance/src/obstacle_detection
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  SET(CMAKE_INSTALL_PREFIX "/home/gauri/multirobotcolvoid/collision_avoidance/install")
+  SET(CMAKE_INSTALL_PREFIX "/home/turtlebot/summer_project/collision_avoidance/install")
 ENDIF(NOT DEFINED CMAKE_INSTALL_PREFIX)
 STRING(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,17 +33,17 @@ IF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/gauri/multirobotcolvoid/collision_avoidance/build/obstacle_detection/catkin_generated/installspace/obstacle_detection.pc")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/turtlebot/summer_project/collision_avoidance/build/obstacle_detection/catkin_generated/installspace/obstacle_detection.pc")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/obstacle_detection/cmake" TYPE FILE FILES
-    "/home/gauri/multirobotcolvoid/collision_avoidance/build/obstacle_detection/catkin_generated/installspace/obstacle_detectionConfig.cmake"
-    "/home/gauri/multirobotcolvoid/collision_avoidance/build/obstacle_detection/catkin_generated/installspace/obstacle_detectionConfig-version.cmake"
+    "/home/turtlebot/summer_project/collision_avoidance/build/obstacle_detection/catkin_generated/installspace/obstacle_detectionConfig.cmake"
+    "/home/turtlebot/summer_project/collision_avoidance/build/obstacle_detection/catkin_generated/installspace/obstacle_detectionConfig-version.cmake"
     )
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/obstacle_detection" TYPE FILE FILES "/home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection/package.xml")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/obstacle_detection" TYPE FILE FILES "/home/turtlebot/summer_project/collision_avoidance/src/obstacle_detection/package.xml")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
