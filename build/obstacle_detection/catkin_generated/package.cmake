@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "obstacle_detection")
+set(obstacle_detection_MAINTAINER "gauri <gaurig@andrew.cmu.edu>")
+set(obstacle_detection_DEPRECATED "")
+set(obstacle_detection_VERSION "0.0.0")
+set(obstacle_detection_BUILD_DEPENDS "roscpp" "rospy" "sensor_msgs" "std_msgs" "pcl_conversions" "pcl_ros" "libpcl-all-dev")
+set(obstacle_detection_RUN_DEPENDS "roscpp" "rospy" "sensor_msgs" "std_msgs" "pcl_conversions" "pcl_ros" "libpcl-all")
+set(obstacle_detection_BUILDTOOL_DEPENDS "catkin")

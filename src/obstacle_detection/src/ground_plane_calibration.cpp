@@ -6,7 +6,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/filters/filter.h>
-#include <std_msgs/Float32MultiArray.h>
+//#include <std_msgs/Float32MultiArray.h>
 #include <Eigen/Dense>
 #include <vector>
 
@@ -16,7 +16,7 @@ class ground_plane_calibration
 {
 	ros::NodeHandle nh;
 	ros::Subscriber pointcloud_sub;
-	ros::Publisher groundplane_pub;
+	//ros::Publisher groundplane_pub;
 	sensor_msgs::PointCloud2 sensor_msg;
 	pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
 	pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
