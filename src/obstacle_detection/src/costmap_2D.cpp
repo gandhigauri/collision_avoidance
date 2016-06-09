@@ -17,10 +17,11 @@ private:
 		float plane_coeffs[];
 		float resolution;
 		ros::Subscriber cam_depth_pts_sub;
+		pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
+		pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
 	
 public:
 	costmap_2D();
-	~costmap_2D();
 	void plane_coeff_cb();
 	void camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg);
 	
@@ -32,11 +33,9 @@ costmap_2D::costmap_2D()
 }
 void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
-  pcl::PointCloud<pcl::PointXYZ> cloud;
   pcl::PCLPointCloud2 pts;
   pcl_conversions::toPCL(*msg,pts);
   pcl::fromPCLPointCloud2(pts,cloud);
-
 }
 
 
