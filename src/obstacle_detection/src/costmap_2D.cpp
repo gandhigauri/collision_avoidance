@@ -44,7 +44,7 @@ void costmap_2D::plane_coeff_cb()
 {
  //ros::param::get("alpha", alpha);
  //ros::param::get("beta",beta);
- ros::param::get("gamma",gamma);
+ //ros::param::get("gamma",gamma);
 }
 
 float calculate_height()
