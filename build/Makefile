@@ -436,6 +436,19 @@ dynamic_reconfigure_generate_messages_py/fast:
 .PHONY : dynamic_reconfigure_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named filter_cloud
+
+# Build rule for target.
+filter_cloud: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 filter_cloud
+.PHONY : filter_cloud
+
+# fast build rule for target.
+filter_cloud/fast:
+	$(MAKE) -f obstacle_detection/CMakeFiles/filter_cloud.dir/build.make obstacle_detection/CMakeFiles/filter_cloud.dir/build
+.PHONY : filter_cloud/fast
+
+#=============================================================================
 # Target rules for targets named geometry_msgs_generate_messages_cpp
 
 # Build rule for target.
@@ -886,6 +899,7 @@ help:
 	@echo "... dynamic_reconfigure_generate_messages_cpp"
 	@echo "... dynamic_reconfigure_generate_messages_lisp"
 	@echo "... dynamic_reconfigure_generate_messages_py"
+	@echo "... filter_cloud"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... geometry_msgs_generate_messages_py"

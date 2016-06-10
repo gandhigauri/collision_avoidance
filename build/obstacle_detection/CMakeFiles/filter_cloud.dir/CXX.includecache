@@ -6,10 +6,8 @@
 
 #IncludeRegexTransform: 
 
-/home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection/src/ground_plane_calibration.cpp
+/home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection/src/filter_cloud.cpp
 ros/ros.h
--
-cstdio
 -
 sensor_msgs/PointCloud2.h
 -
@@ -23,7 +21,9 @@ pcl/point_cloud.h
 -
 pcl/filters/filter.h
 -
-Eigen/Dense
+pcl/kdtree/kdtree_flann.h
+-
+iostream
 -
 vector
 -
@@ -1136,22 +1136,6 @@ src/Core/util/ReenableStupidWarnings.h
 Eigen2Support
 /usr/include/eigen3/Eigen/Eigen2Support
 
-/usr/include/eigen3/Eigen/Dense
-Core
-/usr/include/eigen3/Eigen/Core
-LU
-/usr/include/eigen3/Eigen/LU
-Cholesky
-/usr/include/eigen3/Eigen/Cholesky
-QR
-/usr/include/eigen3/Eigen/QR
-SVD
-/usr/include/eigen3/Eigen/SVD
-Geometry
-/usr/include/eigen3/Eigen/Geometry
-Eigenvalues
-/usr/include/eigen3/Eigen/Eigenvalues
-
 /usr/include/eigen3/Eigen/Eigen2Support
 src/Core/util/DisableStupidWarnings.h
 /usr/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h
@@ -2230,6 +2214,40 @@ pcl/io/file_io.h
 pcl/io/impl/pcd_io.hpp
 -
 
+/usr/include/pcl-1.7/pcl/kdtree/flann.h
+flann/flann.hpp
+-
+
+/usr/include/pcl-1.7/pcl/kdtree/impl/kdtree_flann.hpp
+cstdio
+-
+pcl/kdtree/kdtree_flann.h
+-
+pcl/kdtree/flann.h
+-
+pcl/console/print.h
+-
+
+/usr/include/pcl-1.7/pcl/kdtree/kdtree.h
+limits.h
+-
+pcl/pcl_macros.h
+-
+pcl/point_cloud.h
+-
+pcl/point_representation.h
+-
+pcl/common/io.h
+-
+
+/usr/include/pcl-1.7/pcl/kdtree/kdtree_flann.h
+pcl/kdtree/kdtree.h
+-
+pcl/kdtree/flann.h
+-
+pcl/kdtree/impl/kdtree_flann.hpp
+-
+
 /usr/include/pcl-1.7/pcl/pcl_base.h
 pcl/pcl_macros.h
 -
@@ -2288,6 +2306,14 @@ pcl/PCLHeader.h
 pcl/exceptions.h
 -
 pcl/point_traits.h
+-
+
+/usr/include/pcl-1.7/pcl/point_representation.h
+pcl/point_types.h
+-
+pcl/pcl_macros.h
+-
+pcl/for_each_type.h
 -
 
 /usr/include/pcl-1.7/pcl/point_traits.h

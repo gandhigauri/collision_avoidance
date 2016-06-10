@@ -17,7 +17,7 @@ private:
 		float plane_coeffs[];
 		float resolution;
 		ros::Subscriber cam_depth_pts_sub;
-		pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
+		pcl::PointCloud<pcl::PointXYZ> cloud;
 		pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
 	
 public:
@@ -43,7 +43,7 @@ void costmap_2D::plane_coeff_cb()
 {
  //ros::param::get("alpha", alpha);
  //ros::param::get("beta",beta);
- ros::param::get("gamma",gamma);
+ //ros::param::get("gamma",gamma);
 }
 
 float calculate_height()

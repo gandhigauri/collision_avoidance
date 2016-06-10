@@ -346,6 +346,20 @@ dynamic_reconfigure_generate_messages_py/fast:
 .PHONY : dynamic_reconfigure_generate_messages_py/fast
 
 # Convenience name for target.
+obstacle_detection/CMakeFiles/filter_cloud.dir/rule:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/filter_cloud.dir/rule
+.PHONY : obstacle_detection/CMakeFiles/filter_cloud.dir/rule
+
+# Convenience name for target.
+filter_cloud: obstacle_detection/CMakeFiles/filter_cloud.dir/rule
+.PHONY : filter_cloud
+
+# fast build rule for target.
+filter_cloud/fast:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/filter_cloud.dir/build.make obstacle_detection/CMakeFiles/filter_cloud.dir/build
+.PHONY : filter_cloud/fast
+
+# Convenience name for target.
 obstacle_detection/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule:
 	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
 .PHONY : obstacle_detection/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
@@ -817,6 +831,30 @@ src/costmap_2D.cpp.s:
 	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/costmap_2D.dir/build.make obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.s
 .PHONY : src/costmap_2D.cpp.s
 
+src/filter_cloud.o: src/filter_cloud.cpp.o
+.PHONY : src/filter_cloud.o
+
+# target to build an object file
+src/filter_cloud.cpp.o:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/filter_cloud.dir/build.make obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o
+.PHONY : src/filter_cloud.cpp.o
+
+src/filter_cloud.i: src/filter_cloud.cpp.i
+.PHONY : src/filter_cloud.i
+
+# target to preprocess a source file
+src/filter_cloud.cpp.i:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/filter_cloud.dir/build.make obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.i
+.PHONY : src/filter_cloud.cpp.i
+
+src/filter_cloud.s: src/filter_cloud.cpp.s
+.PHONY : src/filter_cloud.s
+
+# target to generate assembly for a file
+src/filter_cloud.cpp.s:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/filter_cloud.dir/build.make obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.s
+.PHONY : src/filter_cloud.cpp.s
+
 src/ground_plane_calibration.o: src/ground_plane_calibration.cpp.o
 .PHONY : src/ground_plane_calibration.o
 
@@ -862,6 +900,7 @@ help:
 	@echo "... dynamic_reconfigure_generate_messages_lisp"
 	@echo "... dynamic_reconfigure_generate_messages_py"
 	@echo "... edit_cache"
+	@echo "... filter_cloud"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... geometry_msgs_generate_messages_py"
@@ -903,6 +942,9 @@ help:
 	@echo "... src/costmap_2D.o"
 	@echo "... src/costmap_2D.i"
 	@echo "... src/costmap_2D.s"
+	@echo "... src/filter_cloud.o"
+	@echo "... src/filter_cloud.i"
+	@echo "... src/filter_cloud.s"
 	@echo "... src/ground_plane_calibration.o"
 	@echo "... src/ground_plane_calibration.i"
 	@echo "... src/ground_plane_calibration.s"

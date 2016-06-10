@@ -137,6 +137,7 @@ include_directories(
 
 add_executable(ground_plane_calibration src/ground_plane_calibration.cpp)
 add_executable(costmap_2D src/costmap_2D.cpp)
+add_executable(filter_cloud src/filter_cloud.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -147,6 +148,9 @@ add_executable(costmap_2D src/costmap_2D.cpp)
   ${catkin_LIBRARIES}
 )
  target_link_libraries(costmap_2D
+  ${catkin_LIBRARIES}
+)
+ target_link_libraries(filter_cloud
   ${catkin_LIBRARIES}
 )
 #############
