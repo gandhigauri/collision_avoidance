@@ -1,8 +1,8 @@
 <launch>
  
- <node name="costmap_2D" pkg="obstacle_detection" type="costmap_2D" >
-<include file="$(find obstacle_detection)/ground_plane.yaml">
- </include>
+ <node name="costmap_2D" pkg="obstacle_detection" type="costmap_2D" output="screen">
+ <rosparam command="load" file="$(find obstacle_detection)/ground_plane.yaml"/>	
+ <rosparam command="load" file="$(find obstacle_detection)/obstacle_detection_parameters.yaml"/>	
 
  </node>
  
