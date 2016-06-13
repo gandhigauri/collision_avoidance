@@ -1,0 +1,8 @@
+<launch>
+ 
+ <node name="filter_cloud" pkg="obstacle_detection" type="filter_cloud" output="screen">
+ <rosparam command="load" file="$(find obstacle_detection)/ground_plane.yaml"/>	
+
+ </node>
+ 
+ </launch>
