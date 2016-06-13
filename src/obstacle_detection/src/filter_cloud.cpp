@@ -17,52 +17,74 @@ class filter_cloud
 	pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
 	pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
 	pcl::PCLPointCloud2 pts;
+	float alpha, beta, gamma; 
 public:
 	filter_cloud()
 	{
+		load_params();
 		pointcloud_sub = nh.subscribe("/camera/depth_registered/points", 1000, &filter_cloud::points_callback, this);
 	}
+	void load_params()
+	{
+		nh.getParam("/filter_cloud/alpha", alpha);
+   		nh.getParam("/filter_cloud/beta",beta);
+   		nh.getParam("/filter_cloud/gamma",gamma);
+	}
 	void points_callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
-		{
-			
-			//convert point cloud2 msg from sensor to pcl point cloud
-			sensor_msg = *msg;
-	  		pcl_conversions::toPCL(sensor_msg,pts);
-	  		pcl::fromPCLPointCloud2(pts,unfiltered_cloud);
-	  		//pcl::PointCloud<pcl::PointXYZ>::Ptr ptrCloud(&unfiltered_cloud);
-	  		//pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
-			//kdtree.setInputCloud(ptrCloud);
-			//int K = 8;
-			//std::vector<int> pointIdxNKNSearch(K);
-			//std::vector<float> pointNKNSquaredDistance(K);
-			int iter =0;
-	  		BOOST_FOREACH (const pcl::PointXYZ& pt, unfiltered_cloud.points)
-	  		{
-	  			if (std::isnan(pt.x) && std::isnan(pt.y) && std::isnan(pt.z))
-	  			{
-	  				int *neighbors_index;
-	  				neighbors_index = get_neighbor_indices(iter, unfiltered_cloud.width, unfiltered_cloud.height);
-											  				
-
-	  				//std::cout<<pt+1;
-	  				//pcl::PointXYZ neighbors[kdtree.nearestKSearch (pt, K, pointIdxNKNSearch, pointNKNSquaredDistance)];
-	  				//for (int i = 0; i < pointIdxNKNSearch.size (); ++i)
-	  				//{	
-	  				//	neighbors[i] = unfiltered_cloud.points[pointIdxNKNSearch[i]];
-	  				//	std::cout<<neighbors[i];
-	  				//}
-	  			}
-	  			iter++;
-	  			if (iter==5)
-	  				break; 
-	  		}	
-	  			//std::cout<<pt<<","<<pt.x<<","<<pt.y<<","<<pt.z<<std::endl;
-	  		ros::shutdown();
-	  	}
+	{
+		//convert point cloud2 msg from sensor to pcl point cloud
+		sensor_msg = *msg;
+  		pcl_conversions::toPCL(sensor_msg,pts);
+  		pcl::fromPCLPointCloud2(pts,unfiltered_cloud);
+  		filtered_cloud = unfiltered_cloud;
+  		int cloud_width = unfiltered_cloud.width;
+  		int cloud_height = unfiltered_cloud.height;
+		int iter =0;
+  		BOOST_FOREACH (const pcl::PointXYZ& pt, unfiltered_cloud.points)
+  		{	
+  			if (std::isnan(pt.x) && std::isnan(pt.y) && std::isnan(pt.z))
+  			{	
+  				std::vector<int> neighbors_indices;
+  				neighbors_indices = get_neighbor_indices(iter, cloud_width, cloud_height);
+  				BOOST_FOREACH (int i, neighbors_indices)
+  				{
+  					pcl::PointXYZ neighbor_pt = unfiltered_cloud.points[i];
+  					int *neighbor_coordinates;
+  					neighbor_coordinates = get_grid_coordinates(i, cloud_width, cloud_height);
+  					if (satisfies_ground_plane(neighbor_pt))
+  					{
+  						for (int j = 0; j <= neighbor_coordinates[0]; j++)
+  						{
+  							int col_coord[2] = {j, neighbor_coordinates[1]};
+							int pos = get_point_index(col_coord, cloud_width, cloud_height);
+  							filtered_cloud.points[pos].x = neighbor_pt.x;
+  							filtered_cloud.points[pos].z = neighbor_pt.z;
+  							int sum = 0;
+  							int count = 0;
+  							for (int k = 0; k < cloud_width; k++)
+  							{
+  								int row_coord[2] = {j, k}; 
+  								float y_coord = unfiltered_cloud.points[get_point_index(row_coord, cloud_width, cloud_height)].y;
+  								if (!std::isnan(y_coord))
+  								{
+  									count++;
+  									sum = sum + y_coord;
+  								}
+  							}
+  							filtered_cloud.points[pos].y = sum/count;
+  						}
+  					}
+  				}
+  			}
+  			iter++;
+  		}	
+  			//std::cout<<pt<<","<<pt.x<<","<<pt.y<<","<<pt.z<<std::endl;
+  		ros::shutdown();
+  	}
 
 	int* get_grid_coordinates(int index, int width, int height)
 	{
-		static int grid_coordinates[] = {std::floor(index/width), (index%width)};
+		int grid_coordinates[] = {std::floor(index/width), (index%width)};
 		return grid_coordinates;
 	}
 
@@ -71,9 +93,9 @@ public:
 		return (width*grid[0] + grid[1]);
 	}
 
-	int* get_neighbor_indices(int index, int width, int height)
+	std::vector<int> get_neighbor_indices(int index, int width, int height)
 	{
-		static int neighbor_indices[8];
+		std::vector<int> neighbor_indices;
 		int *grid_coord;
 	  	grid_coord = get_grid_coordinates(index, width, height);
 	  	int neighbors_coord[8][2] = {
@@ -86,13 +108,23 @@ public:
 	  					{grid_coord[0]+1,grid_coord[1]},
 	  					{grid_coord[0]+1,grid_coord[1]+1},
 	  				};
-	  	int iter;
 	  	BOOST_FOREACH (int* grid,neighbors_coord)
 	  	{
-	  		neighbor_indices[iter] = get_point_index(grid,width,height);
-	  		iter++;
-	  	}
+	  		if (grid[0]>=0 && grid[0]<height && grid[1]>=0 && grid[1]<width)
+				neighbor_indices.push_back(get_point_index(grid,width,height));
+		}
 	  	return neighbor_indices;
+	}
+
+	bool satisfies_ground_plane(pcl::PointXYZ pt)
+	{
+		if (!(std::isnan(pt.x) && std::isnan(pt.y) && std::isnan(pt.z)))
+		{
+			if ( ( (alpha * pt.x) + (beta * pt.y) + gamma - pt.z) == 0 )
+				return true;
+			else
+				return false;
+		}
 	}
 
 };

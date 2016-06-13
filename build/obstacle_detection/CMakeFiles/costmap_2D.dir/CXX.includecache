@@ -19,6 +19,10 @@ Eigen/Dense
 -
 nav_msgs/OccupancyGrid.h
 -
+boost/foreach.hpp
+-
+math.h
+-
 
 /opt/ros/indigo/include/XmlRpcDecl.h
 ros/macros.h
