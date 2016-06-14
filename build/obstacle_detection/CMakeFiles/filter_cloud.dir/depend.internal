@@ -298,16 +298,11 @@ obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o
  /usr/include/pcl-1.7/pcl/io/impl/pcd_io.hpp
  /usr/include/pcl-1.7/pcl/io/lzf.h
  /usr/include/pcl-1.7/pcl/io/pcd_io.h
- /usr/include/pcl-1.7/pcl/kdtree/flann.h
- /usr/include/pcl-1.7/pcl/kdtree/impl/kdtree_flann.hpp
- /usr/include/pcl-1.7/pcl/kdtree/kdtree.h
- /usr/include/pcl-1.7/pcl/kdtree/kdtree_flann.h
  /usr/include/pcl-1.7/pcl/pcl_base.h
  /usr/include/pcl-1.7/pcl/pcl_config.h
  /usr/include/pcl-1.7/pcl/pcl_exports.h
  /usr/include/pcl-1.7/pcl/pcl_macros.h
  /usr/include/pcl-1.7/pcl/point_cloud.h
- /usr/include/pcl-1.7/pcl/point_representation.h
  /usr/include/pcl-1.7/pcl/point_traits.h
  /usr/include/pcl-1.7/pcl/point_types.h
  /usr/include/pcl-1.7/pcl/register_point_struct.h

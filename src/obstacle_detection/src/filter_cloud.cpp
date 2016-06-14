@@ -98,6 +98,8 @@ public:
   				}
   			iter++;
   			}
+  			pcl::toROSMsg(filtered_cloud, published_msg);
+  			pointcloud_pub.publish(published_msg);
   		}
   		
   		//ROS_INFO("unfiltered nan %d", nanpts_unfiltered);
@@ -108,8 +110,7 @@ public:
   		//		nanpts_unfiltered++;	
   		//}
   		//ROS_INFO("filtered nan %d", nanpts_filtered);
-  		pcl::toROSMsg(filtered_cloud, published_msg);
-  		pointcloud_pub.publish(published_msg);
+  		
   			//std::cout<<pt<<","<<pt.x<<","<<pt.y<<","<<pt.z<<std::endl;
   		//ros::shutdown();
   	}
