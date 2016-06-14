@@ -13,6 +13,7 @@ double floor_threshold;
 double ceil_threshold;
 float resolution;
 nav_msgs::OccupancyGrid GridMap;
+
 class costmap_2D
 {
 private: 
@@ -38,8 +39,8 @@ float calculate_height(float x, float y, float z)
 }
 costmap_2D::costmap_2D()
 {
-  cam_depth_pts_sub = nh.subscribe("/camera/depth_registered/points", 1000, &costmap_2D::camera_cb, this);
   load_params();	
+  cam_depth_pts_sub = nh.subscribe("/filtered_cloud", 1000, &costmap_2D::camera_cb, this);
 
 }
 void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
@@ -55,28 +56,29 @@ void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
      float z = it.z;
      float ht = calculate_height(x,y,z);
      float h0 = calculate_height(0,0,0);
-     if (ht < ceil_threshold & ht > floor_threshold )
+     if ( ( (al * x) + (be * y) + ga - z) != 0 )
      {
-     	Eigen::Vector3d p (x,y,z);
-     	Eigen::Vector3d n (al,be,1);
-     	Eigen::Vector3d o = p - (ht * n);
-     	Eigen::Vector3d c = - h0 * n;
+      if (ht < ceil_threshold & ht > floor_threshold )
+      {
+        Eigen::Vector3d p (x,y,z);
+        Eigen::Vector3d n (al,be,1);
+        Eigen::Vector3d o = p - (ht * n);
+        Eigen::Vector3d c = - h0 * n;
         Eigen::Vector3d d= c-o;
         float dl = d.norm();
         float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  );
-
         int X = floor((dl* cos(theta))/ resolution);
         int Y = floor((dl* sin(theta))/resolution);
-
-     }
+     } 
+    }     
   }
 }
 
 
 void costmap_2D::load_params()
 {
-   nh.getParam("costmap_2D/alpha", al);
-   nh.getParam("costmap_2D/beta",be);
+   nh.getParam("/costmap_2D/alpha", al);
+   nh.getParam("/costmap_2D/beta",be);
    nh.getParam("/costmap_2D/gamma",ga);
    nh.getParam("/costmap_2D/floor_threshold", floor_threshold);
    nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
