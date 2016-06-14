@@ -5,7 +5,6 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/filters/filter.h>
-#include <pcl/kdtree/kdtree_flann.h>
 #include <iostream>
 #include <vector>
 
@@ -13,7 +12,9 @@ class filter_cloud
 {
 	ros::NodeHandle nh;
 	ros::Subscriber pointcloud_sub;
+	ros::Publisher pointcloud_pub;
 	sensor_msgs::PointCloud2 sensor_msg;
+	sensor_msgs::PointCloud2 published_msg;
 	pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
 	pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
 	pcl::PCLPointCloud2 pts;
@@ -23,12 +24,14 @@ public:
 	{
 		load_params();
 		pointcloud_sub = nh.subscribe("/camera/depth_registered/points", 1000, &filter_cloud::points_callback, this);
+		pointcloud_pub = nh.advertise<sensor_msgs::PointCloud2>("filtered_cloud", 1000);
 	}
 	void load_params()
 	{
 		nh.getParam("/filter_cloud/alpha", alpha);
    		nh.getParam("/filter_cloud/beta",beta);
    		nh.getParam("/filter_cloud/gamma",gamma);
+   		ROS_INFO_STREAM("loaded params");
 	}
 	void points_callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 	{
@@ -40,45 +43,75 @@ public:
   		int cloud_width = unfiltered_cloud.width;
   		int cloud_height = unfiltered_cloud.height;
 		int iter =0;
-  		BOOST_FOREACH (const pcl::PointXYZ& pt, unfiltered_cloud.points)
+		int nanpts_unfiltered = 0;
+		BOOST_FOREACH (const pcl::PointXYZ& pt, unfiltered_cloud.points)
   		{	
   			if (std::isnan(pt.x) && std::isnan(pt.y) && std::isnan(pt.z))
-  			{	
-  				std::vector<int> neighbors_indices;
-  				neighbors_indices = get_neighbor_indices(iter, cloud_width, cloud_height);
-  				BOOST_FOREACH (int i, neighbors_indices)
-  				{
-  					pcl::PointXYZ neighbor_pt = unfiltered_cloud.points[i];
-  					int *neighbor_coordinates;
-  					neighbor_coordinates = get_grid_coordinates(i, cloud_width, cloud_height);
-  					if (satisfies_ground_plane(neighbor_pt))
-  					{
-  						for (int j = 0; j <= neighbor_coordinates[0]; j++)
-  						{
-  							int col_coord[2] = {j, neighbor_coordinates[1]};
-							int pos = get_point_index(col_coord, cloud_width, cloud_height);
-  							filtered_cloud.points[pos].x = neighbor_pt.x;
-  							filtered_cloud.points[pos].z = neighbor_pt.z;
-  							int sum = 0;
-  							int count = 0;
-  							for (int k = 0; k < cloud_width; k++)
-  							{
-  								int row_coord[2] = {j, k}; 
-  								float y_coord = unfiltered_cloud.points[get_point_index(row_coord, cloud_width, cloud_height)].y;
-  								if (!std::isnan(y_coord))
-  								{
-  									count++;
-  									sum = sum + y_coord;
-  								}
-  							}
-  							filtered_cloud.points[pos].y = sum/count;
-  						}
-  					}
-  				}
+  			{
+  				nanpts_unfiltered++;
   			}
+  		}
+  		if (nanpts_unfiltered > (0.4*cloud_height*cloud_width))
+  		{
+  			ROS_INFO_STREAM("more than 40 percent are invalid pts");
+  			//TODO
+  			// add code for rotation of robot until it finds valid points
+  		}
+  		else
+  		{
+  			ROS_INFO_STREAM("creating infinite poles");
+  			BOOST_FOREACH (const pcl::PointXYZ& pt, unfiltered_cloud.points)
+  			{	
+  				if (std::isnan(pt.x) && std::isnan(pt.y) && std::isnan(pt.z))
+  				{	
+	  				std::vector<int> neighbors_indices;
+	  				neighbors_indices = get_neighbor_indices(iter, cloud_width, cloud_height);
+	  				for (int i =0 ; i < neighbors_indices.size(); i++)
+	  				{
+	  					pcl::PointXYZ neighbor_pt = unfiltered_cloud.points[neighbors_indices[i]];
+	  					int *neighbor_coordinates;
+	  					neighbor_coordinates = get_grid_coordinates(i, cloud_width, cloud_height);
+	  					if (satisfies_ground_plane(neighbor_pt))
+	  					{
+	  						for (int j = 0; j <= neighbor_coordinates[0]; j++)
+	  						{
+	  							int col_coord[2] = {j, neighbor_coordinates[1]};
+								int pos = get_point_index(col_coord, cloud_width, cloud_height);
+	  							filtered_cloud.points[pos].x = neighbor_pt.x;
+	  							filtered_cloud.points[pos].z = neighbor_pt.z;
+	  							int sum = 0;
+	  							int count = 0;
+	  							for (int k = 0; k < cloud_width; k++)
+	  							{
+	  								int row_coord[2] = {j, k}; 
+	  								float y_coord = unfiltered_cloud.points[get_point_index(row_coord, cloud_width, cloud_height)].y;
+	  								if (!std::isnan(y_coord))
+	  								{
+	  									count++;
+	  									sum = sum + y_coord;
+	  								}
+	  							}
+	  							filtered_cloud.points[pos].y = sum/count;
+	  						}
+	  					}
+	  				}
+  				}
   			iter++;
-  		}	
-  		ros::shutdown();
+  			}
+  		}
+  		
+  		//ROS_INFO("unfiltered nan %d", nanpts_unfiltered);
+  		//int nanpts_filtered = 0;
+  		//BOOST_FOREACH (const pcl::PointXYZ& pt, filtered_cloud.points)
+  		//{	
+  		//	if (std::isnan(pt.x) && std::isnan(pt.y) && std::isnan(pt.z))
+  		//		nanpts_unfiltered++;	
+  		//}
+  		//ROS_INFO("filtered nan %d", nanpts_filtered);
+  		pcl::toROSMsg(filtered_cloud, published_msg);
+  		pointcloud_pub.publish(published_msg);
+  			//std::cout<<pt<<","<<pt.x<<","<<pt.y<<","<<pt.z<<std::endl;
+  		//ros::shutdown();
   	}
 
 	int* get_grid_coordinates(int index, int width, int height)
@@ -134,5 +167,5 @@ int main(int argc, char **argv)
 	filter_cloud filter_obj;
 	while (ros::ok())
 		ros::spin();
-	return 0;
+	//return 0;
 }
