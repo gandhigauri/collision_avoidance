@@ -10,7 +10,6 @@
 #include <Eigen/Dense>
 #include <vector>
 
-//typedef pcl::PointXYZ pcl_type;
 
 class ground_plane_calibration
 {

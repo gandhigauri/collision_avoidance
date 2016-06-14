@@ -78,7 +78,6 @@ public:
   			}
   			iter++;
   		}	
-  			//std::cout<<pt<<","<<pt.x<<","<<pt.y<<","<<pt.z<<std::endl;
   		ros::shutdown();
   	}
 
