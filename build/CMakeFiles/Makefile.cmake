@@ -249,6 +249,7 @@ SET(CMAKE_DEPEND_INFO_FILES
   "obstacle_detection/CMakeFiles/bond_generate_messages_cpp.dir/DependInfo.cmake"
   "obstacle_detection/CMakeFiles/bond_generate_messages_lisp.dir/DependInfo.cmake"
   "obstacle_detection/CMakeFiles/bond_generate_messages_py.dir/DependInfo.cmake"
+  "obstacle_detection/CMakeFiles/close_obstacle.dir/DependInfo.cmake"
   "obstacle_detection/CMakeFiles/costmap_2D.dir/DependInfo.cmake"
   "obstacle_detection/CMakeFiles/dynamic_reconfigure_gencfg.dir/DependInfo.cmake"
   "obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/DependInfo.cmake"

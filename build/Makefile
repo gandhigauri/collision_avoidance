@@ -371,6 +371,19 @@ bond_generate_messages_py/fast:
 .PHONY : bond_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named close_obstacle
+
+# Build rule for target.
+close_obstacle: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 close_obstacle
+.PHONY : close_obstacle
+
+# fast build rule for target.
+close_obstacle/fast:
+	$(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/build
+.PHONY : close_obstacle/fast
+
+#=============================================================================
 # Target rules for targets named costmap_2D
 
 # Build rule for target.
@@ -894,6 +907,7 @@ help:
 	@echo "... bond_generate_messages_cpp"
 	@echo "... bond_generate_messages_lisp"
 	@echo "... bond_generate_messages_py"
+	@echo "... close_obstacle"
 	@echo "... costmap_2D"
 	@echo "... dynamic_reconfigure_gencfg"
 	@echo "... dynamic_reconfigure_generate_messages_cpp"

@@ -21,7 +21,7 @@ private:
 		ros::NodeHandle nh;
 		float plane_coeffs[];
 		ros::Subscriber cam_depth_pts_sub;
-		pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
+		//pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
 		pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
 	
 public:
@@ -48,7 +48,7 @@ void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
   pcl::PCLPointCloud2 pts;
 
   pcl_conversions::toPCL(*msg,pts);
-  pcl::fromPCLPointCloud2(pts,unfiltered_cloud);
+  pcl::fromPCLPointCloud2(pts,filtered_cloud);
   BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
   {
      float x = it.x;
@@ -69,6 +69,8 @@ void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  );
         int X = floor((dl* cos(theta))/ resolution);
         int Y = floor((dl* sin(theta))/resolution);
+        //ROS_INFO("%d,%d\n",X,Y);
+        
      } 
     }     
   }
@@ -83,6 +85,7 @@ void costmap_2D::load_params()
    nh.getParam("/costmap_2D/floor_threshold", floor_threshold);
    nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
    nh.getParam("/costmap_2D/resolution", resolution);
+   ROS_INFO_STREAM("loaded params in costmap");
 }
 
 
@@ -90,5 +93,7 @@ void costmap_2D::load_params()
 int main (int argc, char **argv)
 {
 ros::init(argc,argv,"costmap_2D"); 
-costmap_2D Co;	
+costmap_2D Co;
+while (ros::ok())
+  ros::spin();	
 }

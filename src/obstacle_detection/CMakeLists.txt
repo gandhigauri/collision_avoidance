@@ -4,7 +4,7 @@ project(obstacle_detection)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+#set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -138,6 +138,7 @@ include_directories(
 add_executable(ground_plane_calibration src/ground_plane_calibration.cpp)
 add_executable(costmap_2D src/costmap_2D.cpp)
 add_executable(filter_cloud src/filter_cloud.cpp)
+add_executable(close_obstacle src/close_obstacle.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -151,6 +152,9 @@ add_executable(filter_cloud src/filter_cloud.cpp)
   ${catkin_LIBRARIES}
 )
  target_link_libraries(filter_cloud
+  ${catkin_LIBRARIES}
+)
+ target_link_libraries(close_obstacle
   ${catkin_LIBRARIES}
 )
 #############

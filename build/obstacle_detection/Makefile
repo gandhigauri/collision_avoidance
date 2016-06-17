@@ -276,6 +276,20 @@ bond_generate_messages_py/fast:
 .PHONY : bond_generate_messages_py/fast
 
 # Convenience name for target.
+obstacle_detection/CMakeFiles/close_obstacle.dir/rule:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/close_obstacle.dir/rule
+.PHONY : obstacle_detection/CMakeFiles/close_obstacle.dir/rule
+
+# Convenience name for target.
+close_obstacle: obstacle_detection/CMakeFiles/close_obstacle.dir/rule
+.PHONY : close_obstacle
+
+# fast build rule for target.
+close_obstacle/fast:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/build
+.PHONY : close_obstacle/fast
+
+# Convenience name for target.
 obstacle_detection/CMakeFiles/costmap_2D.dir/rule:
 	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/costmap_2D.dir/rule
 .PHONY : obstacle_detection/CMakeFiles/costmap_2D.dir/rule
@@ -807,6 +821,30 @@ topic_tools_generate_messages_py/fast:
 	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/topic_tools_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/topic_tools_generate_messages_py.dir/build
 .PHONY : topic_tools_generate_messages_py/fast
 
+src/close_obstacle.o: src/close_obstacle.cpp.o
+.PHONY : src/close_obstacle.o
+
+# target to build an object file
+src/close_obstacle.cpp.o:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/src/close_obstacle.cpp.o
+.PHONY : src/close_obstacle.cpp.o
+
+src/close_obstacle.i: src/close_obstacle.cpp.i
+.PHONY : src/close_obstacle.i
+
+# target to preprocess a source file
+src/close_obstacle.cpp.i:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/src/close_obstacle.cpp.i
+.PHONY : src/close_obstacle.cpp.i
+
+src/close_obstacle.s: src/close_obstacle.cpp.s
+.PHONY : src/close_obstacle.s
+
+# target to generate assembly for a file
+src/close_obstacle.cpp.s:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/src/close_obstacle.cpp.s
+.PHONY : src/close_obstacle.cpp.s
+
 src/costmap_2D.o: src/costmap_2D.cpp.o
 .PHONY : src/costmap_2D.o
 
@@ -894,6 +932,7 @@ help:
 	@echo "... bond_generate_messages_cpp"
 	@echo "... bond_generate_messages_lisp"
 	@echo "... bond_generate_messages_py"
+	@echo "... close_obstacle"
 	@echo "... costmap_2D"
 	@echo "... dynamic_reconfigure_gencfg"
 	@echo "... dynamic_reconfigure_generate_messages_cpp"
@@ -939,6 +978,9 @@ help:
 	@echo "... topic_tools_generate_messages_cpp"
 	@echo "... topic_tools_generate_messages_lisp"
 	@echo "... topic_tools_generate_messages_py"
+	@echo "... src/close_obstacle.o"
+	@echo "... src/close_obstacle.i"
+	@echo "... src/close_obstacle.s"
 	@echo "... src/costmap_2D.o"
 	@echo "... src/costmap_2D.i"
 	@echo "... src/costmap_2D.s"

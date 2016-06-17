@@ -67,6 +67,7 @@ obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /opt/ros/
 obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /opt/ros/indigo/include/sensor_msgs/PointCloud2.h
 obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /opt/ros/indigo/include/sensor_msgs/PointField.h
 obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /opt/ros/indigo/include/std_msgs/Header.h
+obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /opt/ros/indigo/include/std_msgs/Int32.h
 obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /usr/include/eigen3/Eigen/Cholesky
 obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /usr/include/eigen3/Eigen/Core
 obstacle_detection/CMakeFiles/filter_cloud.dir/src/filter_cloud.cpp.o: /usr/include/eigen3/Eigen/Eigen2Support
