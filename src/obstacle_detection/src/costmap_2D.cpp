@@ -6,7 +6,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <boost/foreach.hpp>
 #include <math.h>
-//#include <occupancy_grid_utils/exceptions.h>
+//#include <occupancy_grid_utils/coordinate_conversions.h>
 #include <tf/transform_datatypes.h>
 double al;  //alpha
 double be;  // beta
