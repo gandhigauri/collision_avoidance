@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection/src/filter_cloud.cpp
+/home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection/src/close_obstacle.cpp
 ros/ros.h
 -
 sensor_msgs/PointCloud2.h
@@ -19,11 +19,11 @@ pcl/point_cloud.h
 -
 pcl/filters/filter.h
 -
+geometry_msgs/Twist.h
+/home/gauri/multirobotcolvoid/collision_avoidance/src/obstacle_detection/src/geometry_msgs/Twist.h
 std_msgs/Int32.h
 -
 iostream
--
-vector
 -
 
 /opt/ros/indigo/include/XmlRpcDecl.h
@@ -40,6 +40,42 @@ string
 vector
 -
 time.h
+-
+
+/opt/ros/indigo/include/geometry_msgs/Twist.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+geometry_msgs/Vector3.h
+-
+geometry_msgs/Vector3.h
+-
+
+/opt/ros/indigo/include/geometry_msgs/Vector3.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
 -
 
 /opt/ros/indigo/include/pcl_conversions/pcl_conversions.h

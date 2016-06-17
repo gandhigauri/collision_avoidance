@@ -261,7 +261,7 @@ gtest/preinstall:
 gtest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f gtest/CMakeFiles/gtest.dir/build.make gtest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f gtest/CMakeFiles/gtest.dir/build.make gtest/CMakeFiles/gtest.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  4
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  5
 	@echo "Built target gtest"
 .PHONY : gtest/CMakeFiles/gtest.dir/all
 
@@ -292,7 +292,7 @@ clean: gtest/CMakeFiles/gtest.dir/clean
 gtest/CMakeFiles/gtest_main.dir/all: gtest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/CMakeFiles/gtest_main.dir/build.make gtest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f gtest/CMakeFiles/gtest_main.dir/build.make gtest/CMakeFiles/gtest_main.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  5
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  6
 	@echo "Built target gtest_main"
 .PHONY : gtest/CMakeFiles/gtest_main.dir/all
 
@@ -320,6 +320,7 @@ clean: gtest/CMakeFiles/gtest_main.dir/clean
 # Directory level rules for directory obstacle_detection
 
 # Convenience name for "all" pass in the directory.
+obstacle_detection/all: obstacle_detection/CMakeFiles/close_obstacle.dir/all
 obstacle_detection/all: obstacle_detection/CMakeFiles/costmap_2D.dir/all
 obstacle_detection/all: obstacle_detection/CMakeFiles/filter_cloud.dir/all
 obstacle_detection/all: obstacle_detection/CMakeFiles/ground_plane_calibration.dir/all
@@ -335,6 +336,7 @@ obstacle_detection/clean: obstacle_detection/CMakeFiles/actionlib_msgs_generate_
 obstacle_detection/clean: obstacle_detection/CMakeFiles/bond_generate_messages_cpp.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/bond_generate_messages_lisp.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/bond_generate_messages_py.dir/clean
+obstacle_detection/clean: obstacle_detection/CMakeFiles/close_obstacle.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/costmap_2D.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/dynamic_reconfigure_gencfg.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/clean
@@ -659,13 +661,48 @@ clean: obstacle_detection/CMakeFiles/bond_generate_messages_py.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target obstacle_detection/CMakeFiles/close_obstacle.dir
+
+# All Build rule for target.
+obstacle_detection/CMakeFiles/close_obstacle.dir/all:
+	$(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/depend
+	$(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  1
+	@echo "Built target close_obstacle"
+.PHONY : obstacle_detection/CMakeFiles/close_obstacle.dir/all
+
+# Include target in all.
+all: obstacle_detection/CMakeFiles/close_obstacle.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+obstacle_detection/CMakeFiles/close_obstacle.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/close_obstacle.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+.PHONY : obstacle_detection/CMakeFiles/close_obstacle.dir/rule
+
+# Convenience name for target.
+close_obstacle: obstacle_detection/CMakeFiles/close_obstacle.dir/rule
+.PHONY : close_obstacle
+
+# clean rule for target.
+obstacle_detection/CMakeFiles/close_obstacle.dir/clean:
+	$(MAKE) -f obstacle_detection/CMakeFiles/close_obstacle.dir/build.make obstacle_detection/CMakeFiles/close_obstacle.dir/clean
+.PHONY : obstacle_detection/CMakeFiles/close_obstacle.dir/clean
+
+# clean rule for target.
+clean: obstacle_detection/CMakeFiles/close_obstacle.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target obstacle_detection/CMakeFiles/costmap_2D.dir
 
 # All Build rule for target.
 obstacle_detection/CMakeFiles/costmap_2D.dir/all:
 	$(MAKE) -f obstacle_detection/CMakeFiles/costmap_2D.dir/build.make obstacle_detection/CMakeFiles/costmap_2D.dir/depend
 	$(MAKE) -f obstacle_detection/CMakeFiles/costmap_2D.dir/build.make obstacle_detection/CMakeFiles/costmap_2D.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  1
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  2
 	@echo "Built target costmap_2D"
 .PHONY : obstacle_detection/CMakeFiles/costmap_2D.dir/all
 
@@ -824,7 +861,7 @@ clean: obstacle_detection/CMakeFiles/dynamic_reconfigure_generate_messages_py.di
 obstacle_detection/CMakeFiles/filter_cloud.dir/all:
 	$(MAKE) -f obstacle_detection/CMakeFiles/filter_cloud.dir/build.make obstacle_detection/CMakeFiles/filter_cloud.dir/depend
 	$(MAKE) -f obstacle_detection/CMakeFiles/filter_cloud.dir/build.make obstacle_detection/CMakeFiles/filter_cloud.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  3
 	@echo "Built target filter_cloud"
 .PHONY : obstacle_detection/CMakeFiles/filter_cloud.dir/all
 
@@ -952,7 +989,7 @@ clean: obstacle_detection/CMakeFiles/geometry_msgs_generate_messages_py.dir/clea
 obstacle_detection/CMakeFiles/ground_plane_calibration.dir/all:
 	$(MAKE) -f obstacle_detection/CMakeFiles/ground_plane_calibration.dir/build.make obstacle_detection/CMakeFiles/ground_plane_calibration.dir/depend
 	$(MAKE) -f obstacle_detection/CMakeFiles/ground_plane_calibration.dir/build.make obstacle_detection/CMakeFiles/ground_plane_calibration.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  3
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  4
 	@echo "Built target ground_plane_calibration"
 .PHONY : obstacle_detection/CMakeFiles/ground_plane_calibration.dir/all
 

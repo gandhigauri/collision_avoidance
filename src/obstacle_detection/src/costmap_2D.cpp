@@ -21,17 +21,17 @@ nav_msgs::OccupancyGrid finalmap;
 class buildmap
 {
 private: 
-	
-		ros::NodeHandle nh;
-		float plane_coeffs[];
-		ros::Subscriber cam_depth_pts_sub;
-		pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
-		pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
-	
+  
+    ros::NodeHandle nh;
+    float plane_coeffs[];
+    ros::Subscriber cam_depth_pts_sub;
+    pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
+    pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
+  
 public:
-	buildmap();	
-	void load_params();
-	void camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg);
+  buildmap(); 
+  void load_params();
+  void camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg);
 };
 
 
@@ -44,7 +44,7 @@ float calculate_height(float x, float y, float z)
 }
 buildmap::buildmap()
 {
-  load_params();	
+  load_params();  
   cam_depth_pts_sub = nh.subscribe("/filtered_cloud", 1000, &buildmap::camera_cb, this);
 
 }
@@ -61,7 +61,7 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
      float z = it.z;
      float ht = calculate_height(x,y,z);
      float h0 = calculate_height(0,0,0);
-     
+     if ( ( (al * x) + (be * y) + ga - z) != 0 )
       if (ht < ceil_threshold & ht > floor_threshold )
       {
         Eigen::Vector3d p (x,y,z);
@@ -88,6 +88,7 @@ void buildmap::load_params()
    nh.getParam("/costmap_2D/floor_threshold", floor_threshold);
    nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
    nh.getParam("/costmap_2D/resolution", resolution);
+   ROS_INFO_STREAM("loaded params in costmap");
    finalmap.info.width = 200;
    finalmap.info.height= 200;
    finalmap.info.origin.position.x = 0;
@@ -101,5 +102,6 @@ void buildmap::load_params()
 int main (int argc, char **argv)
 {
 ros::init(argc,argv,"costmap_2D"); 
-buildmap Co;	
+buildmap Co;  
 }
+
