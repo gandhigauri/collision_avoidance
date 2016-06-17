@@ -6,7 +6,6 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <boost/foreach.hpp>
 #include <math.h>
-//#include <occupancy_grid_utils/coordinate_conversions.h>
 #include <tf/transform_datatypes.h>
 double al;  //alpha
 double be;  // beta
@@ -73,8 +72,17 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  );
         int X = floor((dl* cos(theta))/ resolution);
         int Y = floor((dl* sin(theta))/resolution);
-
+        X=X+ (finalmap.info.width/2);
+        int index = (Y*finalmap.info.width) + X;
+        if (X > finalmap.info.width || Y > finalmap.info.height)
+        {
+        	std::cout<<"error: out of bounds\n";
+        }
+        else
+        {
+        finalmap.data[index]= 100;
         //index_t ind = cellIndex (GridMap.info, const Cell& c);
+        }
     }     
   }
 }
@@ -89,8 +97,8 @@ void buildmap::load_params()
    nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
    nh.getParam("/costmap_2D/resolution", resolution);
    ROS_INFO_STREAM("loaded params in costmap");
-   finalmap.info.width = 200;
-   finalmap.info.height= 200;
+   finalmap.info.width = 1000/resolution;
+   finalmap.info.height= 1000/resolution;
    finalmap.info.origin.position.x = 0;
    finalmap.info.origin.position.y =0;
    finalmap.info.origin.position.z = 0;
@@ -101,7 +109,7 @@ void buildmap::load_params()
 
 int main (int argc, char **argv)
 {
-ros::init(argc,argv,"costmap_2D"); 
-buildmap Co;  
+ ros::init(argc,argv,"costmap_2D"); 
+ buildmap Co;  
 }
 
