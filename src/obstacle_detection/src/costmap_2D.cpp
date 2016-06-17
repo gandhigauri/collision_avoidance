@@ -6,30 +6,35 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <boost/foreach.hpp>
 #include <math.h>
+//#include <occupancy_grid_utils/exceptions.h>
+#include <tf/transform_datatypes.h>
 double al;  //alpha
 double be;  // beta
 double ga;  //gamma
 double floor_threshold;
 double ceil_threshold;
 float resolution;
-nav_msgs::OccupancyGrid GridMap;
+nav_msgs::OccupancyGrid finalmap;
+//finalmap.header.frame_id = "/global";
 
-class costmap_2D
+
+class buildmap
 {
 private: 
-	
-		ros::NodeHandle nh;
-		float plane_coeffs[];
-		ros::Subscriber cam_depth_pts_sub;
-		//pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
-		pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
-	
+  
+    ros::NodeHandle nh;
+    float plane_coeffs[];
+    ros::Subscriber cam_depth_pts_sub;
+    pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
+    pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
+  
 public:
-	costmap_2D();
-	void load_params();
-	void camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg);
-	
+  buildmap(); 
+  void load_params();
+  void camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg);
 };
+
+
 float calculate_height(float x, float y, float z)
 {
   float sum_of_squares = sqrt(al*al + be*be);
@@ -37,18 +42,18 @@ float calculate_height(float x, float y, float z)
   height = height / sum_of_squares;
   return height;
 }
-costmap_2D::costmap_2D()
+buildmap::buildmap()
 {
-  load_params();	
-  cam_depth_pts_sub = nh.subscribe("/filtered_cloud", 1000, &costmap_2D::camera_cb, this);
+  load_params();  
+  cam_depth_pts_sub = nh.subscribe("/filtered_cloud", 1000, &buildmap::camera_cb, this);
 
 }
-void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
+void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
   pcl::PCLPointCloud2 pts;
 
   pcl_conversions::toPCL(*msg,pts);
-  pcl::fromPCLPointCloud2(pts,filtered_cloud);
+  pcl::fromPCLPointCloud2(pts,unfiltered_cloud);
   BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
   {
      float x = it.x;
@@ -57,7 +62,6 @@ void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
      float ht = calculate_height(x,y,z);
      float h0 = calculate_height(0,0,0);
      if ( ( (al * x) + (be * y) + ga - z) != 0 )
-     {
       if (ht < ceil_threshold & ht > floor_threshold )
       {
         Eigen::Vector3d p (x,y,z);
@@ -69,15 +73,14 @@ void costmap_2D::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  );
         int X = floor((dl* cos(theta))/ resolution);
         int Y = floor((dl* sin(theta))/resolution);
-        //ROS_INFO("%d,%d\n",X,Y);
-        
-     } 
+
+        //index_t ind = cellIndex (GridMap.info, const Cell& c);
     }     
   }
 }
 
 
-void costmap_2D::load_params()
+void buildmap::load_params()
 {
    nh.getParam("/costmap_2D/alpha", al);
    nh.getParam("/costmap_2D/beta",be);
@@ -86,6 +89,12 @@ void costmap_2D::load_params()
    nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
    nh.getParam("/costmap_2D/resolution", resolution);
    ROS_INFO_STREAM("loaded params in costmap");
+   finalmap.info.width = 200;
+   finalmap.info.height= 200;
+   finalmap.info.origin.position.x = 0;
+   finalmap.info.origin.position.y =0;
+   finalmap.info.origin.position.z = 0;
+   finalmap.info.resolution = resolution;
 }
 
 
@@ -93,7 +102,6 @@ void costmap_2D::load_params()
 int main (int argc, char **argv)
 {
 ros::init(argc,argv,"costmap_2D"); 
-costmap_2D Co;
-while (ros::ok())
-  ros::spin();	
+buildmap Co;  
 }
+
