@@ -26,6 +26,7 @@ private:
     ros::Subscriber cam_depth_pts_sub;
     pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
     pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
+    ros::Publisher map_pub;
   
 public:
   buildmap(); 
@@ -45,6 +46,7 @@ buildmap::buildmap()
 {
   load_params();  
   cam_depth_pts_sub = nh.subscribe("/filtered_cloud", 1000, &buildmap::camera_cb, this);
+  map_pub = nh. advertise<nav_msgs::OccupancyGrid>("/final_map", 100);
 
 }
 void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
@@ -53,6 +55,7 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
 
   pcl_conversions::toPCL(*msg,pts);
   pcl::fromPCLPointCloud2(pts,unfiltered_cloud);
+  finalmap.header.frame_id = msg->header.frame_id;
   BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
   {
      float x = it.x;
@@ -85,6 +88,7 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         }
     }     
   }
+  map_pub.publish(finalmap);
 }
 
 
@@ -110,6 +114,7 @@ void buildmap::load_params()
 int main (int argc, char **argv)
 {
  ros::init(argc,argv,"costmap_2D"); 
- buildmap Co;  
+ buildmap Co; 
+ ros::spin(); 
 }
 

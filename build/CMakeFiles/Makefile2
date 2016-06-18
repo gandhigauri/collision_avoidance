@@ -324,6 +324,7 @@ obstacle_detection/all: obstacle_detection/CMakeFiles/close_obstacle.dir/all
 obstacle_detection/all: obstacle_detection/CMakeFiles/costmap_2D.dir/all
 obstacle_detection/all: obstacle_detection/CMakeFiles/filter_cloud.dir/all
 obstacle_detection/all: obstacle_detection/CMakeFiles/ground_plane_calibration.dir/all
+obstacle_detection/all: obstacle_detection/CMakeFiles/obstacle_avoidance.dir/all
 .PHONY : obstacle_detection/all
 
 # Convenience name for "clean" pass in the directory.
@@ -347,9 +348,13 @@ obstacle_detection/clean: obstacle_detection/CMakeFiles/geometry_msgs_generate_m
 obstacle_detection/clean: obstacle_detection/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/geometry_msgs_generate_messages_py.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/ground_plane_calibration.dir/clean
+obstacle_detection/clean: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/clean
+obstacle_detection/clean: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/clean
+obstacle_detection/clean: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/nodelet_generate_messages_cpp.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/nodelet_generate_messages_lisp.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/nodelet_generate_messages_py.dir/clean
+obstacle_detection/clean: obstacle_detection/CMakeFiles/obstacle_avoidance.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/clean
 obstacle_detection/clean: obstacle_detection/CMakeFiles/pcl_msgs_generate_messages_py.dir/clean
@@ -1018,6 +1023,99 @@ clean: obstacle_detection/CMakeFiles/ground_plane_calibration.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir
+
+# All Build rule for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/depend
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 
+	@echo "Built target nav_msgs_generate_messages_cpp"
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
+
+# Build rule for subdir invocation for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_cpp: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+.PHONY : nav_msgs_generate_messages_cpp
+
+# clean rule for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/clean:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/clean
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/clean
+
+# clean rule for target.
+clean: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir
+
+# All Build rule for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/all:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/depend
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 
+	@echo "Built target nav_msgs_generate_messages_lisp"
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/all
+
+# Build rule for subdir invocation for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_lisp: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+.PHONY : nav_msgs_generate_messages_lisp
+
+# clean rule for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/clean:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/clean
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/clean
+
+# clean rule for target.
+clean: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir
+
+# All Build rule for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/all:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/depend
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 
+	@echo "Built target nav_msgs_generate_messages_py"
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/all
+
+# Build rule for subdir invocation for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_py: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+.PHONY : nav_msgs_generate_messages_py
+
+# clean rule for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/clean:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/clean
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/clean
+
+# clean rule for target.
+clean: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target obstacle_detection/CMakeFiles/nodelet_generate_messages_cpp.dir
 
 # All Build rule for target.
@@ -1108,6 +1206,41 @@ obstacle_detection/CMakeFiles/nodelet_generate_messages_py.dir/clean:
 
 # clean rule for target.
 clean: obstacle_detection/CMakeFiles/nodelet_generate_messages_py.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target obstacle_detection/CMakeFiles/obstacle_avoidance.dir
+
+# All Build rule for target.
+obstacle_detection/CMakeFiles/obstacle_avoidance.dir/all:
+	$(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/depend
+	$(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles  7
+	@echo "Built target obstacle_avoidance"
+.PHONY : obstacle_detection/CMakeFiles/obstacle_avoidance.dir/all
+
+# Include target in all.
+all: obstacle_detection/CMakeFiles/obstacle_avoidance.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+obstacle_detection/CMakeFiles/obstacle_avoidance.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/obstacle_avoidance.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gauri/multirobotcolvoid/collision_avoidance/build/CMakeFiles 0
+.PHONY : obstacle_detection/CMakeFiles/obstacle_avoidance.dir/rule
+
+# Convenience name for target.
+obstacle_avoidance: obstacle_detection/CMakeFiles/obstacle_avoidance.dir/rule
+.PHONY : obstacle_avoidance
+
+# clean rule for target.
+obstacle_detection/CMakeFiles/obstacle_avoidance.dir/clean:
+	$(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/clean
+.PHONY : obstacle_detection/CMakeFiles/obstacle_avoidance.dir/clean
+
+# clean rule for target.
+clean: obstacle_detection/CMakeFiles/obstacle_avoidance.dir/clean
 .PHONY : clean
 
 #=============================================================================

@@ -514,6 +514,45 @@ ground_plane_calibration/fast:
 .PHONY : ground_plane_calibration/fast
 
 #=============================================================================
+# Target rules for targets named nav_msgs_generate_messages_cpp
+
+# Build rule for target.
+nav_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nav_msgs_generate_messages_cpp
+.PHONY : nav_msgs_generate_messages_cpp
+
+# fast build rule for target.
+nav_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build
+.PHONY : nav_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named nav_msgs_generate_messages_lisp
+
+# Build rule for target.
+nav_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nav_msgs_generate_messages_lisp
+.PHONY : nav_msgs_generate_messages_lisp
+
+# fast build rule for target.
+nav_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build
+.PHONY : nav_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named nav_msgs_generate_messages_py
+
+# Build rule for target.
+nav_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nav_msgs_generate_messages_py
+.PHONY : nav_msgs_generate_messages_py
+
+# fast build rule for target.
+nav_msgs_generate_messages_py/fast:
+	$(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build
+.PHONY : nav_msgs_generate_messages_py/fast
+
+#=============================================================================
 # Target rules for targets named nodelet_generate_messages_cpp
 
 # Build rule for target.
@@ -551,6 +590,19 @@ nodelet_generate_messages_py: cmake_check_build_system
 nodelet_generate_messages_py/fast:
 	$(MAKE) -f obstacle_detection/CMakeFiles/nodelet_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/nodelet_generate_messages_py.dir/build
 .PHONY : nodelet_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named obstacle_avoidance
+
+# Build rule for target.
+obstacle_avoidance: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 obstacle_avoidance
+.PHONY : obstacle_avoidance
+
+# fast build rule for target.
+obstacle_avoidance/fast:
+	$(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build
+.PHONY : obstacle_avoidance/fast
 
 #=============================================================================
 # Target rules for targets named pcl_msgs_generate_messages_cpp
@@ -918,9 +970,13 @@ help:
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... geometry_msgs_generate_messages_py"
 	@echo "... ground_plane_calibration"
+	@echo "... nav_msgs_generate_messages_cpp"
+	@echo "... nav_msgs_generate_messages_lisp"
+	@echo "... nav_msgs_generate_messages_py"
 	@echo "... nodelet_generate_messages_cpp"
 	@echo "... nodelet_generate_messages_lisp"
 	@echo "... nodelet_generate_messages_py"
+	@echo "... obstacle_avoidance"
 	@echo "... pcl_msgs_generate_messages_cpp"
 	@echo "... pcl_msgs_generate_messages_lisp"
 	@echo "... pcl_msgs_generate_messages_py"

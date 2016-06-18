@@ -139,6 +139,7 @@ add_executable(ground_plane_calibration src/ground_plane_calibration.cpp)
 add_executable(costmap_2D src/costmap_2D.cpp)
 add_executable(filter_cloud src/filter_cloud.cpp)
 add_executable(close_obstacle src/close_obstacle.cpp)
+add_executable(obstacle_avoidance src/obstacle_avoidance.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -155,6 +156,9 @@ add_executable(close_obstacle src/close_obstacle.cpp)
   ${catkin_LIBRARIES}
 )
  target_link_libraries(close_obstacle
+  ${catkin_LIBRARIES}
+)
+ target_link_libraries(obstacle_avoidance
   ${catkin_LIBRARIES}
 )
 #############

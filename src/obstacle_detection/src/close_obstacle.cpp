@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	filter_flag = nh.advertise<std_msgs::Int32>("filter_flag",1000);
 	velocity_pub = nh.advertise<geometry_msgs::Twist>("/mobile_base/commands/velocity",1000);
 	//ros::Rate r(10);
-	while (ros::ok())
-		ros::spin();
+	//while (ros::ok())
+	ros::spin();
 	//r.sleep();
 }

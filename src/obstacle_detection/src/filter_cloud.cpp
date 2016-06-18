@@ -76,7 +76,10 @@ public:
   		}*/
   		if (flag_filter)
   		{
-  			for (int iter = 0; iter < (cloud_height*cloud_width); iter++)
+  			std::vector<int> indices;
+  			pcl::removeNaNFromPointCloud(unfiltered_cloud, filtered_cloud, indices);
+		
+  			/*for (int iter = 0; iter < (cloud_height*cloud_width); iter++)
   			{	
   				if (std::isnan(unfiltered_cloud.points[iter].x))
   				{	
@@ -113,7 +116,7 @@ public:
 	  				}
   				}
   			iter++;
-  			}
+  			}*/
   			pcl::toROSMsg(filtered_cloud, published_msg);
   			pointcloud_pub.publish(published_msg);
   		}
@@ -171,11 +174,11 @@ int main(int argc, char **argv)
 {
 	ros::init(argc,argv,"filter_cloud");
 	filter_cloud filter_obj;
-	ros::Rate r(10);
+	//ros::Rate r(10);
 	//while (ros::ok())
 	//{
 		ros::spin();
-		r.sleep();
+	//	r.sleep();
 	//}
 	//return 0;
 }

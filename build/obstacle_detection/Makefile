@@ -430,6 +430,48 @@ ground_plane_calibration/fast:
 .PHONY : ground_plane_calibration/fast
 
 # Convenience name for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_cpp: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/rule
+.PHONY : nav_msgs_generate_messages_cpp
+
+# fast build rule for target.
+nav_msgs_generate_messages_cpp/fast:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_cpp.dir/build
+.PHONY : nav_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_lisp: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule
+.PHONY : nav_msgs_generate_messages_lisp
+
+# fast build rule for target.
+nav_msgs_generate_messages_lisp/fast:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_lisp.dir/build
+.PHONY : nav_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/rule:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+.PHONY : obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_py: obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/rule
+.PHONY : nav_msgs_generate_messages_py
+
+# fast build rule for target.
+nav_msgs_generate_messages_py/fast:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/nav_msgs_generate_messages_py.dir/build
+.PHONY : nav_msgs_generate_messages_py/fast
+
+# Convenience name for target.
 obstacle_detection/CMakeFiles/nodelet_generate_messages_cpp.dir/rule:
 	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/nodelet_generate_messages_cpp.dir/rule
 .PHONY : obstacle_detection/CMakeFiles/nodelet_generate_messages_cpp.dir/rule
@@ -470,6 +512,20 @@ nodelet_generate_messages_py: obstacle_detection/CMakeFiles/nodelet_generate_mes
 nodelet_generate_messages_py/fast:
 	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/nodelet_generate_messages_py.dir/build.make obstacle_detection/CMakeFiles/nodelet_generate_messages_py.dir/build
 .PHONY : nodelet_generate_messages_py/fast
+
+# Convenience name for target.
+obstacle_detection/CMakeFiles/obstacle_avoidance.dir/rule:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f CMakeFiles/Makefile2 obstacle_detection/CMakeFiles/obstacle_avoidance.dir/rule
+.PHONY : obstacle_detection/CMakeFiles/obstacle_avoidance.dir/rule
+
+# Convenience name for target.
+obstacle_avoidance: obstacle_detection/CMakeFiles/obstacle_avoidance.dir/rule
+.PHONY : obstacle_avoidance
+
+# fast build rule for target.
+obstacle_avoidance/fast:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build
+.PHONY : obstacle_avoidance/fast
 
 # Convenience name for target.
 obstacle_detection/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/rule:
@@ -917,6 +973,30 @@ src/ground_plane_calibration.cpp.s:
 	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/ground_plane_calibration.dir/build.make obstacle_detection/CMakeFiles/ground_plane_calibration.dir/src/ground_plane_calibration.cpp.s
 .PHONY : src/ground_plane_calibration.cpp.s
 
+src/obstacle_avoidance.o: src/obstacle_avoidance.cpp.o
+.PHONY : src/obstacle_avoidance.o
+
+# target to build an object file
+src/obstacle_avoidance.cpp.o:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/src/obstacle_avoidance.cpp.o
+.PHONY : src/obstacle_avoidance.cpp.o
+
+src/obstacle_avoidance.i: src/obstacle_avoidance.cpp.i
+.PHONY : src/obstacle_avoidance.i
+
+# target to preprocess a source file
+src/obstacle_avoidance.cpp.i:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/src/obstacle_avoidance.cpp.i
+.PHONY : src/obstacle_avoidance.cpp.i
+
+src/obstacle_avoidance.s: src/obstacle_avoidance.cpp.s
+.PHONY : src/obstacle_avoidance.s
+
+# target to generate assembly for a file
+src/obstacle_avoidance.cpp.s:
+	cd /home/gauri/multirobotcolvoid/collision_avoidance/build && $(MAKE) -f obstacle_detection/CMakeFiles/obstacle_avoidance.dir/build.make obstacle_detection/CMakeFiles/obstacle_avoidance.dir/src/obstacle_avoidance.cpp.s
+.PHONY : src/obstacle_avoidance.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -948,9 +1028,13 @@ help:
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
+	@echo "... nav_msgs_generate_messages_cpp"
+	@echo "... nav_msgs_generate_messages_lisp"
+	@echo "... nav_msgs_generate_messages_py"
 	@echo "... nodelet_generate_messages_cpp"
 	@echo "... nodelet_generate_messages_lisp"
 	@echo "... nodelet_generate_messages_py"
+	@echo "... obstacle_avoidance"
 	@echo "... pcl_msgs_generate_messages_cpp"
 	@echo "... pcl_msgs_generate_messages_lisp"
 	@echo "... pcl_msgs_generate_messages_py"
@@ -990,6 +1074,9 @@ help:
 	@echo "... src/ground_plane_calibration.o"
 	@echo "... src/ground_plane_calibration.i"
 	@echo "... src/ground_plane_calibration.s"
+	@echo "... src/obstacle_avoidance.o"
+	@echo "... src/obstacle_avoidance.i"
+	@echo "... src/obstacle_avoidance.s"
 .PHONY : help
 
 
