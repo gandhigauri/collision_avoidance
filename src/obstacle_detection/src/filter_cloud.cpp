@@ -57,7 +57,7 @@ public:
 		sensor_msg = *msg;
   		pcl_conversions::toPCL(sensor_msg,pts);
   		pcl::fromPCLPointCloud2(pts,unfiltered_cloud);
-  		filtered_cloud = unfiltered_cloud;
+  		//filtered_cloud = unfiltered_cloud;
   		int cloud_width = unfiltered_cloud.width;
   		int cloud_height = unfiltered_cloud.height;
 		/*int nanpts_unfiltered = 0;
@@ -74,7 +74,7 @@ public:
   			base_cmd.angular.z=0.10;
   			velocity_pub.publish(base_cmd);
   		}*/
-  		if (flag_filter)
+  		if (1)
   		{
   			std::vector<int> indices;
   			pcl::removeNaNFromPointCloud(unfiltered_cloud, filtered_cloud, indices);

@@ -24,7 +24,7 @@ private:
     ros::NodeHandle nh;
     float plane_coeffs[];
     ros::Subscriber cam_depth_pts_sub;
-    pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
+    //pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
     pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
     ros::Publisher map_pub;
   
@@ -46,21 +46,36 @@ buildmap::buildmap()
 {
   load_params();  
   cam_depth_pts_sub = nh.subscribe("/filtered_cloud", 1000, &buildmap::camera_cb, this);
-  map_pub = nh. advertise<nav_msgs::OccupancyGrid>("/final_map", 100);
+  map_pub = nh. advertise<nav_msgs::OccupancyGrid>("/final_map", 1000);
 
 }
 void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
   pcl::PCLPointCloud2 pts;
-
   pcl_conversions::toPCL(*msg,pts);
-  pcl::fromPCLPointCloud2(pts,unfiltered_cloud);
-  finalmap.header.frame_id = msg->header.frame_id;
-  BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
+  pcl::fromPCLPointCloud2(pts,filtered_cloud);
+  //finalmap.header.frame_id = msg->header.frame_id;
+  finalmap.header.frame_id = "camera_link";
+  finalmap.info.width = 10/resolution;
+  finalmap.info.height = 10/resolution;
+  finalmap.info.origin.position.x = 0;
+  finalmap.info.origin.position.y = 0;
+  finalmap.info.origin.position.z = 0;
+  finalmap.info.origin.orientation.x = 0;
+  finalmap.info.origin.orientation.y = 0;
+  finalmap.info.origin.orientation.z = 0;
+  finalmap.info.origin.orientation.w = 1;
+  finalmap.info.resolution = resolution;
+  int total_cells = finalmap.info.width * finalmap.info.height;
+  finalmap.data.resize(total_cells);
+  //for (int index = 0; index < total_cells; index++)
+    //finalmap.data[index] = 0;
+  for (int iter = 0; iter < (filtered_cloud.height*filtered_cloud.width); iter++)
+  //BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
   {
-     float x = it.x;
-     float y = it.y;
-     float z = it.z;
+     float x = filtered_cloud.points[iter].x;
+     float y = filtered_cloud.points[iter].y;
+     float z = filtered_cloud.points[iter].z;
      float ht = calculate_height(x,y,z);
      float h0 = calculate_height(0,0,0);
      if ( ( (al * x) + (be * y) + ga - z) != 0 )
@@ -73,20 +88,29 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         Eigen::Vector3d d= c-o;
         float dl = d.norm();
         float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  );
+        //std::cout<<theta<<std::endl;
         int X = floor((dl* cos(theta))/ resolution);
         int Y = floor((dl* sin(theta))/resolution);
-        X=X+ (finalmap.info.width/2);
-        int index = (Y*finalmap.info.width) + X;
-        if (X > finalmap.info.width || Y > finalmap.info.height)
+        int X_map = -Y ;//+ (finalmap.info.width/2) - 1;
+        int Y_map = -X+ (finalmap.info.width/2) ;
+        int index = (X_map * finalmap.info.width) + Y_map;
+        //std::cout<<index<<std::endl;
+        //std::cout<<"w"<<finalmap.info.width<<"h"<<finalmap.info.height<<std::endl;
+        
+        if (X_map > finalmap.info.width || Y_map > finalmap.info.height)
         {
-        	std::cout<<"error: out of bounds\n";
+        	//std::cout<<"error: out of bounds\n";
+          std::cout<<"y"<<Y_map<<"x"<<X_map<<std::endl;
         }
         else
         {
+        //ROS_INFO_STREAM("here");
         finalmap.data[index]= 100;
+        std::cout<<"y_aur kya"<<Y_map<<"x"<<X_map<<std::endl;
         //index_t ind = cellIndex (GridMap.info, const Cell& c);
-        }
-    }     
+        } 
+    }
+    //ros::shutdown();     
   }
   map_pub.publish(finalmap);
 }
@@ -101,12 +125,7 @@ void buildmap::load_params()
    nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
    nh.getParam("/costmap_2D/resolution", resolution);
    ROS_INFO_STREAM("loaded params in costmap");
-   finalmap.info.width = 1000/resolution;
-   finalmap.info.height= 1000/resolution;
-   finalmap.info.origin.position.x = 0;
-   finalmap.info.origin.position.y =0;
-   finalmap.info.origin.position.z = 0;
-   finalmap.info.resolution = resolution;
+   
 }
 
 
@@ -115,6 +134,7 @@ int main (int argc, char **argv)
 {
  ros::init(argc,argv,"costmap_2D"); 
  buildmap Co; 
+ while (ros::ok())
  ros::spin(); 
 }
 
