@@ -1,8 +1,0 @@
-prefix=/home/gauri/multirobotcolvoid/collision_avoidance/devel
-
-Name: obstacle_detection
-Description: Description of obstacle_detection
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/gauri/multirobotcolvoid/collision_avoidance/devel/lib 
-Requires: 
