@@ -308,6 +308,9 @@ obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/
 obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/console/print.h
 obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/conversions.h
 obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/exceptions.h
+obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/filters/boost.h
+obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/filters/filter.h
+obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/filters/impl/filter.hpp
 obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/for_each_type.h
 obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/impl/pcl_base.hpp
 obstacle_detection/CMakeFiles/costmap_2D.dir/src/costmap_2D.cpp.o: /usr/include/pcl-1.7/pcl/impl/point_types.hpp

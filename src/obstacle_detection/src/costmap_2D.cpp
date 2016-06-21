@@ -1,11 +1,12 @@
 #include <ros/ros.h>
 #include <pcl_conversions/pcl_conversions.h>
+#include <pcl/filters/filter.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Float32MultiArray.h>
 #include <Eigen/Dense>
 #include <nav_msgs/OccupancyGrid.h>
 #include <boost/foreach.hpp>
-#include <math.h>
+//#include <math.h>
 #include <tf/transform_datatypes.h>
 double al;  //alpha
 double be;  // beta
@@ -45,7 +46,7 @@ float calculate_height(float x, float y, float z)
 buildmap::buildmap()
 {
   load_params();  
-  cam_depth_pts_sub = nh.subscribe("/filtered_cloud", 1000, &buildmap::camera_cb, this);
+  cam_depth_pts_sub = nh.subscribe("//camera/depth_registered/points", 1000, &buildmap::camera_cb, this);
   map_pub = nh. advertise<nav_msgs::OccupancyGrid>("/final_map", 1000);
 
 }
@@ -54,25 +55,17 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
   pcl::PCLPointCloud2 pts;
   pcl_conversions::toPCL(*msg,pts);
   pcl::fromPCLPointCloud2(pts,filtered_cloud);
+  //std::vector<int> indices;
+  //pcl::removeNaNFromPointCloud(unfiltered_cloud, filtered_cloud, indices);
   //finalmap.header.frame_id = msg->header.frame_id;
   finalmap.header.frame_id = "camera_link";
-  finalmap.info.width = 10/resolution;
-  finalmap.info.height = 10/resolution;
-  finalmap.info.origin.position.x = 0;
-  finalmap.info.origin.position.y = 0;
-  finalmap.info.origin.position.z = 0;
-  finalmap.info.origin.orientation.x = 0;
-  finalmap.info.origin.orientation.y = 0;
-  finalmap.info.origin.orientation.z = 0;
-  finalmap.info.origin.orientation.w = 1;
-  finalmap.info.resolution = resolution;
-  int total_cells = finalmap.info.width * finalmap.info.height;
-  finalmap.data.resize(total_cells);
   //for (int index = 0; index < total_cells; index++)
     //finalmap.data[index] = 0;
   for (int iter = 0; iter < (filtered_cloud.height*filtered_cloud.width); iter++)
   //BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
   {
+    if (!(std::isnan(filtered_cloud.points[iter].x) || std::isnan(filtered_cloud.points[iter].y) || std::isnan(filtered_cloud.points[iter].z)))
+    {
      float x = filtered_cloud.points[iter].x;
      float y = filtered_cloud.points[iter].y;
      float z = filtered_cloud.points[iter].z;
@@ -89,27 +82,29 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         float dl = d.norm();
         float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  );
         //std::cout<<theta<<std::endl;
-        int X = floor((dl* cos(theta))/ resolution);
-        int Y = floor((dl* sin(theta))/resolution);
+        int X = std::floor((dl* cos(theta))/ resolution);
+        int Y = std::floor((dl* sin(theta))/resolution);
         int X_map = -Y ;//+ (finalmap.info.width/2) - 1;
-        int Y_map = -X+ (finalmap.info.width/2) ;
+        int Y_map = -X + (finalmap.info.width/2) ;
         int index = (X_map * finalmap.info.width) + Y_map;
         //std::cout<<index<<std::endl;
         //std::cout<<"w"<<finalmap.info.width<<"h"<<finalmap.info.height<<std::endl;
-        
-        if (X_map > finalmap.info.width || Y_map > finalmap.info.height)
+        //std::cout<<"y"<<Y<<"x"<<X<<std::endl;
+        //std::cout<<"ymap"<<Y_map<<"xmap"<<X_map<<std::endl;
+        if (X_map > finalmap.info.height || Y_map > finalmap.info.width)
         {
         	//std::cout<<"error: out of bounds\n";
-          std::cout<<"y"<<Y_map<<"x"<<X_map<<std::endl;
+          //std::cout<<"y"<<Y_map<<"x"<<X_map<<std::endl;
         }
         else
         {
         //ROS_INFO_STREAM("here");
         finalmap.data[index]= 100;
-        std::cout<<"y_aur kya"<<Y_map<<"x"<<X_map<<std::endl;
+        //std::cout<<"y_aur kya"<<Y_map<<"x"<<X_map<<std::endl;
         //index_t ind = cellIndex (GridMap.info, const Cell& c);
         } 
     }
+  }
     //ros::shutdown();     
   }
   map_pub.publish(finalmap);
@@ -124,6 +119,18 @@ void buildmap::load_params()
    nh.getParam("/costmap_2D/floor_threshold", floor_threshold);
    nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
    nh.getParam("/costmap_2D/resolution", resolution);
+   finalmap.info.width = 5/resolution;
+   finalmap.info.height = 5/resolution;
+   int total_cells = finalmap.info.width * finalmap.info.height;
+   finalmap.data.resize(total_cells);
+   finalmap.info.origin.position.x = 0;
+   finalmap.info.origin.position.y = 0;
+   finalmap.info.origin.position.z = 0;
+   finalmap.info.origin.orientation.x = 0;
+   finalmap.info.origin.orientation.y = 0;
+   finalmap.info.origin.orientation.z = 0;
+   finalmap.info.origin.orientation.w = 1;
+   finalmap.info.resolution = resolution;
    ROS_INFO_STREAM("loaded params in costmap");
    
 }
