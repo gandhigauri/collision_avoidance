@@ -6,6 +6,9 @@
 #include <Eigen/Dense>
 #include <nav_msgs/OccupancyGrid.h>
 #include <boost/foreach.hpp>
+#include <pcl/io/pcd_io.h>
+#include <pcl/point_types.h>
+#include <pcl/filters/voxel_grid.h>
 //#include <math.h>
 #include <tf/transform_datatypes.h>
 double al;  //alpha
@@ -40,7 +43,8 @@ float calculate_height(float x, float y, float z)
 {
   float sum_of_squares = sqrt(al*al + be*be);
   float height = ((al* x) + (be*y )+ z + ga);
-  height = height / sum_of_squares;
+  height = - height / sum_of_squares; //added minus sign
+  //std::cout<<height<<std::endl;
   return height;
 }
 buildmap::buildmap()
@@ -64,15 +68,16 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
   for (int iter = 0; iter < (filtered_cloud.height*filtered_cloud.width); iter++)
   //BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
   {
+    float h0 = calculate_height(0,0,0);
     if (!(std::isnan(filtered_cloud.points[iter].x) || std::isnan(filtered_cloud.points[iter].y) || std::isnan(filtered_cloud.points[iter].z)))
     {
      float x = filtered_cloud.points[iter].x;
-     float y = filtered_cloud.points[iter].y;
+     float y = filtered_cloud.points[iter].y; //changed dir of y
      float z = filtered_cloud.points[iter].z;
      float ht = calculate_height(x,y,z);
-     float h0 = calculate_height(0,0,0);
      if ( ( (al * x) + (be * y) + ga - z) != 0 )
-      if (ht < ceil_threshold & ht > floor_threshold )
+     {
+      if (ht > ceil_threshold && ht < floor_threshold )
       {
         Eigen::Vector3d p (x,y,z);
         Eigen::Vector3d n (al,be,1);
@@ -84,19 +89,20 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         //std::cout<<theta<<std::endl;
         int X = std::floor((dl* cos(theta))/ resolution);
         int Y = std::floor((dl* sin(theta))/resolution);
-        int X_map = -Y ;//+ (finalmap.info.width/2) - 1;
-        int Y_map = -X + (finalmap.info.width/2) ;
-        int index = (X_map * finalmap.info.width) + Y_map;
+        int X_map = Y ;//+ (finalmap.info.width/2) - 1;
+        int Y_map = -X  + (finalmap.info.width/2) - 1;
+        int index = (Y_map * finalmap.info.width) + X_map;
         //std::cout<<index<<std::endl;
         //std::cout<<"w"<<finalmap.info.width<<"h"<<finalmap.info.height<<std::endl;
         //std::cout<<"y"<<Y<<"x"<<X<<std::endl;
         //std::cout<<"ymap"<<Y_map<<"xmap"<<X_map<<std::endl;
-        if (X_map > finalmap.info.height || Y_map > finalmap.info.width)
-        {
+        //if (X_map > finalmap.info.height || Y_map > finalmap.info.width)
+        //{
         	//std::cout<<"error: out of bounds\n";
           //std::cout<<"y"<<Y_map<<"x"<<X_map<<std::endl;
-        }
-        else
+        //}
+        //else
+        if (X_map < finalmap.info.height && Y_map < finalmap.info.width)
         {
         //ROS_INFO_STREAM("here");
         finalmap.data[index]= 100;
@@ -104,6 +110,7 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
         //index_t ind = cellIndex (GridMap.info, const Cell& c);
         } 
     }
+  }
   }
     //ros::shutdown();     
   }
@@ -141,7 +148,11 @@ int main (int argc, char **argv)
 {
  ros::init(argc,argv,"costmap_2D"); 
  buildmap Co; 
+ ros::Rate r(10);
  while (ros::ok())
- ros::spin(); 
+ {
+  ros::spin();
+  r.sleep();
+  } 
 }
 

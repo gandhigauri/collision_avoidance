@@ -67,7 +67,7 @@ public:
 		ROS_INFO_STREAM("Computed ground plane parameters");
 
 		//write to yaml file
-		std::string groundplanedatafile = "src/obstacle_detection/ground_plane.yaml";
+		std::string groundplanedatafile = "src/collision_avoidance/obstacle_detection/ground_plane.yaml";
       	ROS_INFO("Writing ground plane data to %s", groundplanedatafile.c_str());
       	FILE* yaml = fopen(groundplanedatafile.c_str(), "w");
     	fprintf(yaml, "alpha: %f\nbeta: %f\ngamma: %f\n", coeff_vector(0), coeff_vector(1), coeff_vector(2));
