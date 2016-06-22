@@ -63,7 +63,7 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
   pcl_conversions::toPCL(*msg,*pts);
   pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
   sor.setInputCloud (pts);
-  sor.setLeafSize (0.01f, 0.01f, 0.01f);
+  sor.setLeafSize (0.1f, 0.1f, 0.1f);
   sor.filter (*pts_filtered);
   pcl::fromPCLPointCloud2(*pts_filtered,unfiltered_cloud);
   pcl::removeNaNFromPointCloud(unfiltered_cloud, filtered_cloud, indices);
@@ -77,8 +77,8 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
   int cloud_width = filtered_cloud.width;
   nav_msgs::OccupancyGrid finalmap;
   finalmap.header.frame_id = "camera_link";
-  finalmap.info.width = 5/resolution;
-  finalmap.info.height = 5/resolution;
+  finalmap.info.width = 10/resolution;
+  finalmap.info.height = 10/resolution;
   int map_height = finalmap.info.height;
   int map_width = finalmap.info.width;
   int total_cells = map_height * map_width;
