@@ -13,9 +13,9 @@
  <rosparam command="load" file="$(find obstacle_detection)/obstacle_detection_parameters.yaml"/>	
  </node>
  
-<!--
+
  <node name="obstacle_avoidance" pkg="obstacle_detection" type="obstacle_avoidance" output="screen">
  <rosparam command="load" file="$(find obstacle_detection)/obstacle_avoidance_parameters.yaml"/>	
- </node>-->
+ </node>
  
  </launch>

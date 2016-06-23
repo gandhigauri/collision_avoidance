@@ -6,7 +6,6 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/filters/filter.h>
-//#include <std_msgs/Float32MultiArray.h>
 #include <Eigen/Dense>
 #include <vector>
 
@@ -15,17 +14,14 @@ class ground_plane_calibration
 {
 	ros::NodeHandle nh;
 	ros::Subscriber pointcloud_sub;
-	//ros::Publisher groundplane_pub;
 	sensor_msgs::PointCloud2 sensor_msg;
 	pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
 	pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
 	pcl::PCLPointCloud2 pts;
-	//std_msgs::Float32MultiArray coeff_msg;
 public:
 	ground_plane_calibration()
 	{
 		pointcloud_sub = nh.subscribe("/camera/depth_registered/points", 1000, &ground_plane_calibration::points_callback, this);
-		//groundplane_pub = nh.advertise<std_msgs::Float32MultiArray>("ground_plane", 1000);
 	}
 	void points_callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 	{
@@ -57,13 +53,6 @@ public:
 		//solve Ax = b
 		coeff_vector = A.colPivHouseholderQr().solve(b);
 
-		//publish the coefficient vector in a multiarray of Float type
-		//coeff_msg.data.clear();
-		//for (float i = 0; i < coeff_vector.size(); i++)
-		//{
-		//	coeff_msg.data.push_back(coeff_vector(i));
-		//}
-		//groundplane_pub.publish(coeff_msg);	
 		ROS_INFO_STREAM("Computed ground plane parameters");
 
 		//write to yaml file

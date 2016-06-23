@@ -1,8 +1,7 @@
 <launch>
- <node name="close_obstacle" pkg="obstacle_detection" type="close_obstacle" output="screen">
- </node>
- <node name="filter_cloud" pkg="obstacle_detection" type="filter_cloud" output="screen">
- <rosparam command="load" file="$(find obstacle_detection)/ground_plane.yaml"/>	
+ <node name="obstacle_avoidance" pkg="obstacle_detection" type="obstacle_avoidance" output="screen">
+ <rosparam command="load" file="$(find obstacle_detection)/obstacle_avoidance_parameters.yaml"/>	
+ 
 
  </node>
  

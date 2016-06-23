@@ -1,15 +1,16 @@
+/*node to create occupancy map from the point cloud*/
+
 #include <ros/ros.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/filters/filter.h>
 #include <sensor_msgs/PointCloud2.h>
-#include <std_msgs/Float32MultiArray.h>
+#include <std_msgs/Int32.h>
 #include <Eigen/Dense>
 #include <nav_msgs/OccupancyGrid.h>
 #include <boost/foreach.hpp>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 #include <pcl/filters/voxel_grid.h>
-//#include <math.h>
 #include <tf/transform_datatypes.h>
 double al;  //alpha
 double be;  // beta
@@ -17,64 +18,68 @@ double ga;  //gamma
 double floor_threshold;
 double ceil_threshold;
 float resolution;
-//finalmap.header.frame_id = "/global";
-
+int min_cells;
 
 class buildmap
 {
-private: 
+  private: 
   
     ros::NodeHandle nh;
     float plane_coeffs[];
     ros::Subscriber cam_depth_pts_sub;
-    pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
-    //pcl::PCLPointCloud2 pts;
-    //pcl::PCLPointCloud2 pts_filtered;
+    //pcl::PointCloud<pcl::PointXYZ> unfiltered_cloud;
     std::vector<int> indices;
     pcl::PointCloud<pcl::PointXYZ> filtered_cloud;
     ros::Publisher map_pub;
+    ros::Publisher flag_pub;
+    std_msgs::Int32 flag;
   
-public:
-  buildmap(); 
-  void load_params();
-  void camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg);
+  public:
+    buildmap(); 
+    void load_params();
+    void camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg);
 };
 
-
+/*function to calculate height from the ground plane*/
 float calculate_height(float x, float y, float z)
 {
   float sum_of_squares = sqrt(al*al + be*be);
   float height = ((al* x) + (be*y )+ z + ga);
   height = - height / sum_of_squares; //added minus sign
-  //std::cout<<height<<std::endl;
   return height;
 }
+
 buildmap::buildmap()
 {
   load_params();  
-  cam_depth_pts_sub = nh.subscribe("//camera/depth_registered/points", 1000, &buildmap::camera_cb, this);
+  cam_depth_pts_sub = nh.subscribe("/camera/depth_registered/points", 1000, &buildmap::camera_cb, this);
   map_pub = nh. advertise<nav_msgs::OccupancyGrid>("/final_map", 1000);
+  flag_pub = nh.advertise<std_msgs::Int32>("flag",1000);
 
 }
+
+/*call back function for point cloud;publishes the occupancy grid*/
 void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
+  /*filtered point cloud from the ros message*/
   pcl::PCLPointCloud2::Ptr pts (new pcl::PCLPointCloud2 ());
   pcl::PCLPointCloud2::Ptr pts_filtered (new pcl::PCLPointCloud2 ());
   pcl_conversions::toPCL(*msg,*pts);
+  //throttle cloud
   pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
   sor.setInputCloud (pts);
   sor.setLeafSize (0.1f, 0.1f, 0.1f);
   sor.filter (*pts_filtered);
-  pcl::fromPCLPointCloud2(*pts_filtered,unfiltered_cloud);
-  pcl::removeNaNFromPointCloud(unfiltered_cloud, filtered_cloud, indices);
-  //finalmap.header.frame_id = msg->header.frame_id;
-  //for (int index = 0; index < total_cells; index++)
-    //finalmap.data[index] = 0;
+  pcl::fromPCLPointCloud2(*pts_filtered,filtered_cloud);
+
   float h0 = calculate_height(0,0,0);
   Eigen::Vector3d n (al,be,1);
   Eigen::Vector3d c = - h0 * n;
+
   int cloud_height = filtered_cloud.height;
   int cloud_width = filtered_cloud.width;
+
+  /*occupancy map parameters*/
   nav_msgs::OccupancyGrid finalmap;
   finalmap.header.frame_id = "camera_link";
   finalmap.info.width = 10/resolution;
@@ -91,68 +96,57 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
   finalmap.info.origin.orientation.z = 0;
   finalmap.info.origin.orientation.w = 1;
   finalmap.info.resolution = resolution;
-  for (int iter = 0; iter < (cloud_width * cloud_height); iter++)
-  //BOOST_FOREACH(const pcl::PointXYZ & it , filtered_cloud.points)
+
+  //condition to avoid all invalid points when very close to obstacles
+  if ((cloud_width * cloud_height) < min_cells)
+    flag.data = 0;
+
+  else
   {
-    //if (!(std::isnan(filtered_cloud.points[iter].x) || std::isnan(filtered_cloud.points[iter].y) || std::isnan(filtered_cloud.points[iter].z)))
-    //{
-     pcl::PointXYZ pt = filtered_cloud.points[iter]; 
-     float x = pt.x;
-     float y = pt.y; //changed dir of y
-     float z = pt.z;
-     float ht = calculate_height(x,y,z);
-     if ( ( (al * x) + (be * y) + ga - z) != 0 )
-     {
-      if (ht > ceil_threshold && ht < floor_threshold )
+    flag.data = 1;
+    for (int iter = 0; iter < (cloud_width * cloud_height); iter++)
+    {
+      pcl::PointXYZ pt = filtered_cloud.points[iter]; 
+      float x = pt.x;
+      float y = pt.y; 
+      float z = pt.z;
+      float ht = calculate_height(x,y,z);
+      if ( ( (al * x) + (be * y) + ga - z) != 0 )
       {
-        Eigen::Vector3d p (x,y,z);
-        Eigen::Vector3d o = p - (ht * n);
-        Eigen::Vector3d d= c-o;
-        float dl = d.norm();
-        float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  );
-        //std::cout<<theta<<std::endl;
-        int X = std::floor((dl* cos(theta))/ resolution);
-        int Y = std::floor((dl* sin(theta))/resolution);
-        int X_map = Y ;//+ (finalmap.info.width/2) - 1;
-        int Y_map = -X  + (map_width/2) - 1;
-        int index = (Y_map * map_width) + X_map;
-        //std::cout<<index<<std::endl;
-        //std::cout<<"w"<<finalmap.info.width<<"h"<<finalmap.info.height<<std::endl;
-        //std::cout<<"y"<<Y<<"x"<<X<<std::endl;
-        //std::cout<<"ymap"<<Y_map<<"xmap"<<X_map<<std::endl;
-        //if (X_map > finalmap.info.height || Y_map > finalmap.info.width)
-        //{
-        	//std::cout<<"error: out of bounds\n";
-          //std::cout<<"y"<<Y_map<<"x"<<X_map<<std::endl;
-        //}
-        //else
-        if (X_map < map_height && Y_map < map_width && index < total_cells)
-        //{
-        //ROS_INFO_STREAM("here");
-        finalmap.data[index]= 100;
-        //std::cout<<"y_aur kya"<<Y_map<<"x"<<X_map<<std::endl;
-        //index_t ind = cellIndex (GridMap.info, const Cell& c);
-        //} 
-        //else
-          //finalmap.data[index] = -1;
+        if (ht > ceil_threshold && ht < floor_threshold )
+        {
+          Eigen::Vector3d p (x,y,z);
+          Eigen::Vector3d o = p - (ht * n);
+          Eigen::Vector3d d= c-o;
+          float dl = d.norm();
+          float theta = std::atan2(   (o(1)-c(1)) ,   (o(0) - c(0))  ); 
+          //projecting points in the grid
+          int X = std::floor((dl* cos(theta))/ resolution);
+          int Y = std::floor((dl* sin(theta))/resolution);
+          int X_map = Y ;//+ (finalmap.info.width/2) - 1;
+          int Y_map = -X  + (map_width/2) - 1;
+          int index = (Y_map * map_width) + X_map;
+          if (X_map < map_height && Y_map < map_width && index < total_cells)
+            finalmap.data[index]= 100;
+        }
+      }   
     }
   }
-  
-    //ros::shutdown();     
-  }
+  flag_pub.publish(flag);
   map_pub.publish(finalmap);
 }
 
 
 void buildmap::load_params()
 {
-   nh.getParam("/costmap_2D/alpha", al);
-   nh.getParam("/costmap_2D/beta",be);
-   nh.getParam("/costmap_2D/gamma",ga);
-   nh.getParam("/costmap_2D/floor_threshold", floor_threshold);
-   nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
-   nh.getParam("/costmap_2D/resolution", resolution);
-   ROS_INFO_STREAM("loaded params in costmap");
+  nh.getParam("/costmap_2D/alpha", al);
+  nh.getParam("/costmap_2D/beta",be);
+  nh.getParam("/costmap_2D/gamma",ga);
+  nh.getParam("/costmap_2D/floor_threshold", floor_threshold);
+  nh.getParam("/costmap_2D/ceil_threshold",ceil_threshold);
+  nh.getParam("/costmap_2D/resolution", resolution);
+  nh.getParam("/costmap_2D/min_cells", min_cells);
+  ROS_INFO_STREAM("loaded params in costmap");
    
 }
 
@@ -167,6 +161,6 @@ int main (int argc, char **argv)
  {
   ros::spin();
   r.sleep();
-  } 
+ } 
 }
 
