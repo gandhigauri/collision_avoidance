@@ -1,5 +1,5 @@
-linear_velocity_const: 0.001
-angular_velocity_const: -50
+linear_velocity_const: 0.000
+angular_velocity_const: 0
 min_x: -0.5
 min_y: 0
 max_x: 0.5

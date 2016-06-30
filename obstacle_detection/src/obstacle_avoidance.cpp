@@ -66,7 +66,7 @@ void map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
 	}
 	else
 	{
-		base_cmd.angular.z = 0.8;
+		base_cmd.angular.z = 0.2;
 		base_cmd.linear.x = 0;
 	}
 	velocity_pub.publish(base_cmd);

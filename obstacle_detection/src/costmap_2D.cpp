@@ -156,11 +156,11 @@ int main (int argc, char **argv)
 {
  ros::init(argc,argv,"costmap_2D"); 
  buildmap Co; 
- ros::Rate r(10);
+ //ros::Rate r(10);
  while (ros::ok())
  {
   ros::spin();
-  r.sleep();
+  //r.sleep();
  } 
 }
 
