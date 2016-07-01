@@ -140,7 +140,7 @@ add_executable(costmap_2D src/costmap_2D.cpp)
 add_executable(filter_cloud src/filter_cloud.cpp)
 add_executable(close_obstacle src/close_obstacle.cpp)
 add_executable(obstacle_avoidance src/obstacle_avoidance.cpp)
-
+add_executable(laser_scan src/laser_scan.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(obstacle_detection_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -159,6 +159,9 @@ add_executable(obstacle_avoidance src/obstacle_avoidance.cpp)
   ${catkin_LIBRARIES}
 )
  target_link_libraries(obstacle_avoidance
+  ${catkin_LIBRARIES}
+)
+ target_link_libraries(laser_scan
   ${catkin_LIBRARIES}
 )
 #############

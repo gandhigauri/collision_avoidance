@@ -111,6 +111,7 @@ void buildmap::camera_cb(const sensor_msgs::PointCloud2::ConstPtr& msg)
       float y = pt.y; 
       float z = pt.z;
       float ht = calculate_height(x,y,z);
+
       if ( ( (al * x) + (be * y) + ga - z) != 0 )
       {
         if (ht > ceil_threshold && ht < floor_threshold )

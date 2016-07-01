@@ -4,12 +4,13 @@ project(obstacle_detection)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+#set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   sensor_msgs
+  nav_msgs
   std_msgs
   pcl_conversions 
   pcl_ros
@@ -17,7 +18,6 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
-find_package(Eigen REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -107,7 +107,7 @@ find_package(Eigen REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES obstacle_detection
-  CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs pcl_conversions pcl_ros
+#  CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 
@@ -119,7 +119,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS} #${occupancy_grid_utils_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -138,6 +138,8 @@ include_directories(
 add_executable(ground_plane_calibration src/ground_plane_calibration.cpp)
 add_executable(costmap_2D src/costmap_2D.cpp)
 add_executable(filter_cloud src/filter_cloud.cpp)
+add_executable(close_obstacle src/close_obstacle.cpp)
+add_executable(obstacle_avoidance src/obstacle_avoidance.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -151,6 +153,12 @@ add_executable(filter_cloud src/filter_cloud.cpp)
   ${catkin_LIBRARIES}
 )
  target_link_libraries(filter_cloud
+  ${catkin_LIBRARIES}
+)
+ target_link_libraries(close_obstacle
+  ${catkin_LIBRARIES}
+)
+ target_link_libraries(obstacle_avoidance
   ${catkin_LIBRARIES}
 )
 #############
