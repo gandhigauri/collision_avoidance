@@ -23,6 +23,7 @@ void flag_callback(const std_msgs::Int32::ConstPtr& msg)
 void map_callback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
 {
 	nav_msgs::OccupancyGrid occ_grid = *msg;
+	//std::cout<<occ_grid.header.frame_id<<std::endl;
 	geometry_msgs::Twist base_cmd;
 	float resolution = occ_grid.info.resolution;
 	int width = occ_grid.info.width;
@@ -79,6 +80,7 @@ int robot_frame_to_index(int x, int y, int width, int height)
     int Y_map = -x  + (width/2) - 1;
     //converting to index
     int index = (Y_map * width) + X_map;
+
     //std::cout<<index<<std::endl;
 	return index;
 }

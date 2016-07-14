@@ -1,0 +1,5 @@
+<launch>
+ <include file="$(find obstacle_detection)/launch/pub_multi.launch" >
+<remap from="/chatter" to= "/chatter4"/>
+</include>
+</launch>

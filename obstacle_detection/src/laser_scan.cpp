@@ -79,6 +79,11 @@ public:
 		resolution = 0.01;
 		ROS_INFO_STREAM("loaded params in laser_scan");
 	}
+
+	float occupancy_grid_mapping(float l_prev, float z)
+	{
+		
+	}
 };
 
 int main(int argc, char **argv)

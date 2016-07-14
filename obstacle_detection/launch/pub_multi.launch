@@ -1,0 +1,7 @@
+<launch>
+ <node name="publisher_multi" pkg="obstacle_detection" type="publisher_multi" output="screen"/>
+ <node name="subscriber_multi" pkg="obstacle_detection" type="subscriber_multi" output="screen"/>
+
+
+
+</launch>

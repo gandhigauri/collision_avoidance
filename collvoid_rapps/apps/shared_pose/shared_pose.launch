@@ -1,0 +1,4 @@
+<launch>
+    <argname="application_namespace"/>
+    <include file="$(find collvoid_turtlebot)/launch/turtlebot_master.launch" />
+</launch>

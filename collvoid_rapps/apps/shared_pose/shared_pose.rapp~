@@ -1,0 +1,5 @@
+display: shared_pose
+description: Default ros style talker tutorial
+compatibility: rocon:/
+launch: shared.launch
+public_interface: shared.interface
