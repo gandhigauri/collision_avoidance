@@ -1,5 +1,7 @@
-display: shared_pose
+display: Collvoid
 description: Rapp for sharing the position share
-compatibility: rocon:/
-launch: shared.launch
-public_interface: shared.interface
+compatibility: rocon:/turtlebot
+launch: shared_pose.launch
+public_interface: shared_pose.interface
+public_parameters: shared_pose.parameters
+icon: ''

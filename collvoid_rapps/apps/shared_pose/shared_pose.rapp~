@@ -1,5 +1,6 @@
-display: shared_pose
-description: Default ros style talker tutorial
-compatibility: rocon:/
-launch: shared.launch
-public_interface: shared.interface
+display: Collvoid
+description: Rapp for sharing the position share
+compatibility: rocon:/turtlebot
+public_interface: shared_pose.interface
+public_parameters: shared_pose.parameters
+icon: ''
