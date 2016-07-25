@@ -1,0 +1,57 @@
+<launch>
+  <arg name="initial_pose_x" default="2.1"/>
+  <arg name="initial_pose_y" default="2.1"/>
+  <arg name="initial_pose_a" default="3.14"/>
+
+  <include file="$(find turtlebot_bringup)/launch/concert_client.launch">
+        	<arg name="robot_name" value="turtlebot01" />
+		<arg name="robot_unique_name" value="false" />
+	</include>
+
+  <!--- Run Robot Pose EKF -->
+  <!--include file="$(find turtlebot_bringup)/launch/minimal.launch" /-->
+
+  <!--- Run the kinect -->
+  <include file="$(find turtlebot_bringup)/launch/3dsensor.launch"> 
+        <arg name="rgb_processing" value="false"/>
+	<arg name="depth_registration" value="false"/>
+        <arg name="depth_processing" value="false"/>	
+        <arg name="scan_topic" value="/scan"/>
+  </include>     
+
+ <!-- Run the map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find collvoid_turtlebot)/world/my_map.yaml" output="screen"/>
+
+  <!--- Run AMCL -->
+  <include file="$(find collvoid_turtlebot)/launch/amcl_turtlebot.launch">
+<arg name="scan_topic" value="scan"/>
+    <arg name="use_map_topic" value="true"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+</include> 
+ 
+  <!--- Run Controller -->
+  <rosparam command="load" file="$(find collvoid_controller)/goals.yaml"/>
+  <node pkg="collvoid_controller" type="controllerRobots.py" name="controller_robots" output="screen" >
+  <remap from="/position_share" to="/turtlebot01/position_share_in"/>
+  <remap from="/commands_robot" to="/turtlebot01/commands_robot"/>
+</node>
+
+  <!--- Run collvoid -->
+  <rosparam command="load" file="$(find collvoid_turtlebot)/params/params_created.yaml"/>
+
+  
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam command="load" file="$(find collvoid_turtlebot)/params/params_turtle.yaml"/>
+    <rosparam command="load" file="$(find collvoid_turtlebot)/params/collvoid_config.yaml"/>
+    <param name="base_local_planner" value="collvoid_local_planner/CollvoidLocalPlanner" />
+    <param name="base_global_planner" value="collvoid_simple_global_planner/CollvoidSimpleGlobalPlanner" />
+   
+    <remap from="/position_share_out" to="/turtlebot01/position_share_out"/>
+    <remap from="/position_share_in" to="/turtlebot01/position_share_in"/>
+    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
+  </node>
+
+
+</launch>
