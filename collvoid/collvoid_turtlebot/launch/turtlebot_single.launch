@@ -1,0 +1,51 @@
+<launch>
+  <arg name="initial_pose_x" default="0.5"/>
+  <arg name="initial_pose_y" default="0.6"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <!--- Run Robot Pose EKF -->
+  <include file="$(find turtlebot_bringup)/launch/minimal.launch" />
+
+  <!--- Run the kinect -->
+  <include file="$(find turtlebot_bringup)/launch/3dsensor.launch"> 
+        <arg name="rgb_processing" value="false"/>
+	<arg name="depth_registration" value="false"/>
+        <arg name="depth_processing" value="false"/>	
+        <arg name="scan_topic" value="/scan"/>
+  </include>      
+
+  <!-- Run the map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find collvoid_turtlebot)/world/my_map.yaml" output="screen"/>
+
+  <!-- Run the laser -->
+  <!--include file="$(find collvoid_turtlebot)/launch/hokuyo.launch" /-->
+
+ <!--- Run AMCL -->
+  <include file="$(find collvoid_turtlebot)/launch/amcl_turtlebot.launch"> 
+    <arg name="scan_topic" value="scan"/>
+    <arg name="use_map_topic" value="false"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!--- Run Controller -->
+  <rosparam command="load" file="$(find collvoid_controller)/goals.yaml"/>
+  <node pkg="collvoid_controller" type="controllerRobots.py" name="controller_robots" output="screen" />
+  
+
+  <!--- Run collvoid -->
+  <rosparam command="load" file="$(find collvoid_turtlebot)/params/params_created.yaml"/>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam command="load" file="$(find collvoid_turtlebot)/params/params_turtle.yaml"/>
+<rosparam command="load" file="$(find collvoid_turtlebot)/params/collvoid_config.yaml"/>
+    <param name="base_local_planner" value="collvoid_local_planner/CollvoidLocalPlanner" />
+
+     
+    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
+  </node>
+
+
+
+</launch>
