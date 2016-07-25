@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find turtlebot_concert)/solutions/concert.launch"/>
+	<node pkg="collvoid_local_planner" name="collvoid_sync" output="screen" type="collvoid_sync"/>
+	<node pkg="collvoid_controller" type="controller.py" name="controller" output="screen"/>
+</launch>
