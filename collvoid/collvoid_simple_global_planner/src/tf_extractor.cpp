@@ -4,19 +4,19 @@
 #include <geometry_msgs/TransformStamped.h>
 
 ros::Publisher tf_pub;
-ros::Subscriber tf_sub;
+ros::Subscriber tf_ob_sub, tf_mo_sub;
 
  void listen_transform( std::string parent,std::string child)
 {
   tf::TransformListener listener;
   while (ros::ok()) {
- tf::StampedTransform transform;
+  tf::StampedTransform transform;
   try
   {
     listener.waitForTransform(child, parent, ros::Time(0), ros::Duration(10.0));
     listener.lookupTransform(child, parent, ros::Time(0), transform);
     geometry_msgs::TransformStamped transform_stamped;
-    transformStampedTFToMsg(transform,transform_stamped);
+    tf::transformStampedTFToMsg(transform,transform_stamped);
     tf_pub.publish(transform_stamped);   
   }
   catch (tf::TransformException &ex)
@@ -32,11 +32,20 @@ void send_transform(std::string parent, std::string child, tf::Transform transfo
 }
 
 
-void tf_callback(const geometry_msgs::TransformStamped::ConstPtr & msg)
+void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr & msg)
 {
   tf::StampedTransform transform;
-  transformStampedMsgToTF(*msg, transform);
+  tf::transformStampedMsgToTF(*msg, transform);
   send_transform("/odom","/base_footprint",transform);
+
+}
+
+
+void tf_mo_callback(const geometry_msgs::TransformStamped::ConstPtr & msg)
+{
+  tf::StampedTransform transform;
+  tf::transformStampedMsgToTF(*msg, transform);
+  send_transform("/map","/odom",transform);
 
 }
 
@@ -46,8 +55,10 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh;
 	std::string child= "/plate_3_link";
 	std::string parent = "/base_footprint";
-    tf_pub = nh.advertise<geometry_msgs::TransformStamped>("/transform_bf_p3",1);
-    tf_sub = nh.subscribe("/tranform_odom_bf",10,&tf_callback);
-    listen_transform(parent,child);
+  tf_pub = nh.advertise<geometry_msgs::TransformStamped>("/transform_bf_p3",1);
+  tf_ob_sub = nh.subscribe("/tranform_odom_bf",10,&tf_ob_callback);
+  tf_mo_sub = nh.subscribe("/tranform_map_odom",10,&tf_mo_callback);
+  listen_transform(parent,child);
+  ros::spin();
 }
 

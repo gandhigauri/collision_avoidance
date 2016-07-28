@@ -146,7 +146,7 @@ add_executable(obstacle_avoidance src/obstacle_avoidance.cpp)
 add_executable(laser_scan src/laser_scan.cpp)
 add_executable(publisher_multi src/publisher_multi.cpp)
 add_executable(subscriber_multi src/subscriber_multi.cpp)
-add_executable (tf_extractor src/tf_extractor.cpp)
+
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(obstacle_detection_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -176,9 +176,7 @@ add_executable (tf_extractor src/tf_extractor.cpp)
  target_link_libraries(subscriber_multi
   ${catkin_LIBRARIES}
 )
- target_link_libraries(tf_extractor 
- ${catkin_LIBRARIES}
- )
+
 #############
 ## Install ##
 #############

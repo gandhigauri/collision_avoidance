@@ -60,7 +60,11 @@ add_library(${PROJECT_NAME} src/collvoid_simple_global_planner.cpp)
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 #add_executable(example examples/example.cpp)
+add_executable (tf_extractor src/tf_extractor.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
+ target_link_libraries(tf_extractor 
+ ${catkin_LIBRARIES}
+ )
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
     #TODO DEPENDENCIES geometry_msgs std_msgs
