@@ -3,10 +3,4 @@
 
  <node name="subscriber_multi" pkg="obstacle_detection" type="subscriber_multi" output="screen"/>
 
-<node pkg="collvoid_controller" type="controller.py" name="controller" output="screen" ns="r1">
-<remap from="/commands_robot" to="/r1/commands_robot"/>
-</node>
-<node pkg="collvoid_controller" type="controller.py" name="controller" output="screen" ns="r2">
-<remap from="/commands_robot" to="/r2/commands_robot"/>
-</node>
 </launch>
