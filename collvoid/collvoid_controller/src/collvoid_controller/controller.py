@@ -27,10 +27,12 @@ class controller(wx.Frame):
     def initialize(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(sizer)
-
-        self.pub1 = rospy.Publisher('/turtlebot01/commands_robot', String)
-        self.pub2 = rospy.Publisher('/turtlebot02/commands_robot', String)
-        self.pub3 = rospy.Publisher('/turtlebot03/commands_robot', String)
+        self.robot_ids = rospy.get_param("/robot_ids")
+        self.pubs = {}
+        for name in self.robot_ids.keys():
+          rid = self.robot_ids[name]
+          pub_topic = "/" + name + "/commands_robot"
+          self.pubs[rid] = rospy.Publisher(pub_topic, String)
 
         self.robotList = []
         self.robotList.append("all")
@@ -113,68 +115,57 @@ class controller(wx.Frame):
         sleepTime = float(self.delayTime.GetValue())
         rospy.sleep(sleepTime)
         string = "%s send delayed Goal"%self.choiceBox.GetStringSelection()
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 	
     def setCircling(self,event):
         string = "%s circle"%self.choiceBox.GetStringSelection()
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
     def setOnOff(self,event):
         string = "%s WP change"%self.choiceBox.GetStringSelection()
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
             
     def sendNextGoal(self,event):
         string = "%s next Goal"%self.choiceBox.GetStringSelection()
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
     def sendInitGuess(self,event):
         string = "%s init Guess"%self.choiceBox.GetStringSelection()
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
     def stop(self,event):
         string = "%s Stop"%self.choiceBox.GetStringSelection()
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
     def start(self,event):
         string = "%s next Goal"%self.choiceBox.GetStringSelection()
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
     def all_start(self,event):
         string = "all Start"
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
     def all_init_guess(self,event):
         string = "all init Guess"
-        self.pub1.publish(str(string))
-        self.pub2.publish(str(string))
-        self.pub3.publish(str(string))
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish(str(string))
 
         
     def reset(self,event):
-        self.pub1.publish("all Stop")
-        self.pub2.publish("all Stop")
-        self.pub3.publish("all Stop")
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish("all Stop")
         rospy.sleep(0.2)
-        self.pub1.publish("all Restart")
-        self.pub2.publish("all Restart")
-        self.pub3.publish("all Restart")
+        for rid in self.robot_ids.values():
+          self.pubs[rid].publish("all Restart")
         #rospy.sleep(0.2)
         self.reset_srv()
             
