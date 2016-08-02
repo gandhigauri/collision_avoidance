@@ -1,11 +1,17 @@
 publishers:
   - name: position_share_out
     type: collvoid_msgs/PoseTwistWithCovariance
+  - name: transform_bf_p3
+    type: geometry_msgs/TransformStamped
 subscribers:
   - name: position_share_in
     type: collvoid_msgs/PoseTwistWithCovariance
   - name: commands_robot
     type: std_msgs/String
+  - name: transform_odom_bf
+    type: geometry_msgs/TransformStamped
+  - name: transform_map_odom
+    type: geometry_msgs/TransformStamped
 services: []
 action_clients: []
 action_servers: []
