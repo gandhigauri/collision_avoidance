@@ -5,6 +5,7 @@
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
 ros::Publisher tf_bp_pub, nav_ob_pub, initpose_mo_pub;
+tf::Transform prevTransform;
 
 void listen_transform(std::string parent, std::string child)
 {
@@ -28,14 +29,19 @@ void listen_transform(std::string parent, std::string child)
 void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
 {
   nav_msgs::Odometry odom;
-  tf::StampedTransform transform;
+  tf::StampedTransform currentTransform;
   geometry_msgs::TransformStamped ts = *msg;
-  tf::transformStampedMsgToTF(ts, transform);
+  tf::transformStampedMsgToTF(ts, currentTransform);
   odom.header.stamp = ts.header.stamp;
   odom.header.frame_id = ts.header.frame_id;
   odom.child_frame_id = ts.child_frame_id;
-  tf::poseTFToMsg(transform, odom.pose.pose);
+  tf::poseTFToMsg(currentTransform, odom.pose.pose);
+  tfScalar delx =  currentTransform.getOrigin().x() - prevTransform.getOrigin().x();
+  tfScalar dely =  currentTransform.getOrigin().y() - prevTransform.getOrigin().y();
+  odom.twist.twist.angular.z = 4.0 * atan2(dely, delx);
+  odom.twist.twist.linear.x = 0.5 * sqrt(pow(delx, 2) + pow(dely, 2));
   nav_ob_pub.publish(odom);
+  prevTransform = currentTransform;
 }
 
 
@@ -56,7 +62,7 @@ int main (int argc, char** argv)
   ros::init(argc,argv,"tf_extractor");
   ros::NodeHandle nh;
   ros::Subscriber tf_ob_sub, tf_mo_sub;
-  
+  prevTransform.setIdentity();
   //all publishers and subscribers
   tf_bp_pub = nh.advertise<geometry_msgs::TransformStamped>("/turtlebot01/transform_bf_p3", 1);
   nav_ob_pub = nh.advertise<nav_msgs::Odometry>("/overhead_odom", 1);
