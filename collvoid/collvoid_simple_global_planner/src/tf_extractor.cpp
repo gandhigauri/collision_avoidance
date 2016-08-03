@@ -1,16 +1,14 @@
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
-#include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 
-ros::Publisher tf_bp_pub, tf_ob_pub;
-ros::Subscriber tf_ob_sub, tf_mo_sub;
+ros::Publisher tf_bp_pub, nav_ob_pub, initpose_mo_pub;
 
- void listen_transform( std::string parent,std::string child)
+void listen_transform(std::string parent, std::string child)
 {
   tf::TransformListener listener;
-  while (ros::ok()) {
   tf::StampedTransform transform;
   try
   {
@@ -24,48 +22,55 @@ ros::Subscriber tf_ob_sub, tf_mo_sub;
   {
     ROS_ERROR("%s", ex.what());
   }
-  ros::spin();
-  }
-}
-void send_transform(std::string parent, std::string child, tf::Transform transform)
-{
-  tf::TransformBroadcaster br;
-  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), parent, child));
+  
 }
 
-
-void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr & msg)
+void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
 {
   nav_msgs::Odometry odom;
   tf::StampedTransform transform;
   geometry_msgs::TransformStamped ts = *msg;
   tf::transformStampedMsgToTF(ts, transform);
-  send_transform("/odom","/base_footprint",transform);
-  odom.header = ts.header;
+  odom.header.stamp = ts.header.stamp;
+  odom.header.frame_id = ts.header.frame_id;
   odom.child_frame_id = ts.child_frame_id;
   tf::poseTFToMsg(transform, odom.pose.pose);
-  tf_ob_pub.publish(odom);
+  nav_ob_pub.publish(odom);
 }
 
 
-void tf_mo_callback(const geometry_msgs::TransformStamped::ConstPtr & msg)
+void tf_mo_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
 {
+  geometry_msgs::PoseWithCovarianceStamped initpose;
+  geometry_msgs::TransformStamped ts = *msg;
   tf::StampedTransform transform;
-  tf::transformStampedMsgToTF(*msg, transform);
-  send_transform("/map","/odom",transform);
-
+  tf::transformStampedMsgToTF(ts, transform);
+  initpose.header.stamp = ros::Time::now();
+  initpose.header.frame_id = ts.header.frame_id;
+  tf::poseTFToMsg(transform, initpose.pose.pose); 
+  initpose_mo_pub.publish(initpose);
 }
 
 int main (int argc, char** argv)
 {
-	ros::init(argc,argv,"tf_extractor");
-	ros::NodeHandle nh;
-	std::string child= "/plate_3_link";
-	std::string parent = "/base_footprint";
-  tf_bp_pub = nh.advertise<geometry_msgs::TransformStamped>("/transform_bf_p3",1);
-  tf_ob_pub = nh.advertise<nav_msgs::Odometry>("/overhead_odom",1);
-  tf_ob_sub = nh.subscribe("/tranform_odom_bf",10,&tf_ob_callback);
-  tf_mo_sub = nh.subscribe("/tranform_map_odom",10,&tf_mo_callback);
-  listen_transform(parent,child);
+  ros::init(argc,argv,"tf_extractor");
+  ros::NodeHandle nh;
+  ros::Subscriber tf_ob_sub, tf_mo_sub;
+  
+  //all publishers and subscribers
+  tf_bp_pub = nh.advertise<geometry_msgs::TransformStamped>("/turtlebot01/transform_bf_p3", 1);
+  nav_ob_pub = nh.advertise<nav_msgs::Odometry>("/overhead_odom", 1);
+  initpose_mo_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/overhead_initial_pose", 1);
+  tf_ob_sub = nh.subscribe<geometry_msgs::TransformStamped>("/turtlebot01/transform_odom_bf", 1, tf_ob_callback);
+  tf_mo_sub = nh.subscribe<geometry_msgs::TransformStamped>("/turtlebot01/transform_map_odom", 1, tf_mo_callback);
+  
+  //publishing static transform between plate3 and base footprint from tf tree
+  std::string child = "/plate_3_link";
+  std::string parent = "/base_footprint";
+  while(ros::ok())
+  {
+    listen_transform(parent,child);
+    ros::spinOnce();
+  }
 }
 
