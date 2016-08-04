@@ -7,8 +7,7 @@
 ros::Publisher tf_bp_pub, nav_ob_pub, initpose_mo_pub;
 tf::Transform prevTransform;
 ros::Time prevTime;
-tfScalar prevYaw;
-double LINEAR_THRESHOLD = 0.03, ANGULAR_THRESHOLD = 0.01;
+double LINEAR_THRESHOLD = 0.04, ANGULAR_THRESHOLD = 0.02;
 
 void listen_transform(std::string parent, std::string child)
 {
@@ -28,6 +27,7 @@ void listen_transform(std::string parent, std::string child)
   }  
 }
 
+
 void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
 {
   nav_msgs::Odometry odom;
@@ -39,25 +39,21 @@ void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
   odom.header.frame_id = ts.header.frame_id;
   odom.child_frame_id = ts.child_frame_id;
   tf::poseTFToMsg(currentTransform, odom.pose.pose);
-
-
+ 
   //velocity calculation for odom
-  tfScalar currentRoll, currentPitch, currentYaw;
-  currentTransform.getBasis().getRPY(currentRoll, currentPitch, currentYaw);
-  //std::cout<<" roll "<<roll<<" pitch "<<pitch<<" yaw "<<yaw<<std::endl;
-  //double del_x =  currentTransform.getOrigin().x() - prevTransform.getOrigin().x();
-  //double del_y =  currentTransform.getOrigin().y() - prevTransform.getOrigin().y();
-  double del_d = sqrt(pow(currentTransform.getOrigin().x(), 2) + pow(currentTransform.getOrigin().y(), 2)) - sqrt(pow(prevTransform.getOrigin().x(), 2) + pow(prevTransform.getOrigin().y(), 2));
-  double del_th =  currentYaw - prevYaw;
+  tf::Transform diffTransform = prevTransform.inverse() * currentTransform;
+  tfScalar diffRoll, diffPitch, diffYaw;
+  diffTransform.getBasis().getRPY(diffRoll, diffPitch, diffYaw);
+  double del_d = diffTransform.getOrigin().x();
   double dt = (currentTime - prevTime).toSec();
-  if (std::abs(del_th) > ANGULAR_THRESHOLD)
-    odom.twist.twist.angular.z = del_th/dt;
+  if (std::abs(diffYaw) > ANGULAR_THRESHOLD)
+    odom.twist.twist.angular.z = diffYaw/dt;
   if (std::abs(del_d) > LINEAR_THRESHOLD)
-    odom.twist.twist.linear.x = del_d/dt;//sqrt(pow(del_x, 2) + pow(del_y, 2))/dt;
+    odom.twist.twist.linear.x = del_d/dt;
+  
   nav_ob_pub.publish(odom);
   prevTransform = currentTransform;
   prevTime = currentTime;
-  prevYaw = currentYaw;
 }
 
 
@@ -73,6 +69,7 @@ void tf_mo_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
   initpose_mo_pub.publish(initpose);
 }
 
+
 int main (int argc, char** argv)
 {
   ros::init(argc,argv,"tf_extractor");
@@ -80,14 +77,13 @@ int main (int argc, char** argv)
   ros::Subscriber tf_ob_sub, tf_mo_sub;
   prevTransform.setIdentity();
   prevTime = ros::Time::now();
-  prevYaw = 0;
 
   //all publishers and subscribers
-  tf_bp_pub = nh.advertise<geometry_msgs::TransformStamped>("/turtlebot01/transform_bf_p3", 1);
+  tf_bp_pub = nh.advertise<geometry_msgs::TransformStamped>("/transform_bf_p3", 1);
   nav_ob_pub = nh.advertise<nav_msgs::Odometry>("/overhead_odom", 1);
   initpose_mo_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/overhead_initial_pose", 1);
-  tf_ob_sub = nh.subscribe<geometry_msgs::TransformStamped>("/turtlebot01/transform_odom_bf", 1, tf_ob_callback);
-  tf_mo_sub = nh.subscribe<geometry_msgs::TransformStamped>("/turtlebot01/transform_map_odom", 1, tf_mo_callback);
+  tf_ob_sub = nh.subscribe<geometry_msgs::TransformStamped>("/transform_odom_bf", 1, tf_ob_callback);
+  tf_mo_sub = nh.subscribe<geometry_msgs::TransformStamped>("/transform_map_odom", 1, tf_mo_callback);
   
   //publishing static transform between plate3 and base footprint from tf tree
   std::string child = "/plate_3_link";
