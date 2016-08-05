@@ -48,6 +48,7 @@
     <param name="initial_pose_y"            value="$(arg initial_pose_y)"/>
     <param name="initial_pose_a"            value="$(arg initial_pose_a)"/>
     <remap from="scan"                      to="$(arg scan_topic)"/>
+    <remap from="initialpose"		    to="overhead_initial_pose"/>
   </node>
 </launch>
 

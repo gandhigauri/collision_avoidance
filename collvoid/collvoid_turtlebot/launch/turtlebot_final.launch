@@ -26,9 +26,9 @@
   <include file="$(find collvoid_turtlebot)/launch/amcl_turtlebot.launch">
 <arg name="scan_topic" value="scan"/>
     <arg name="use_map_topic" value="true"/>
-    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
-    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
-    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    <!--arg name="initial_pose_x" value="$(arg initial_pose_x)"/-->
+    <!--arg name="initial_pose_y" value="$(arg initial_pose_y)"/-->
+    <!--arg name="initial_pose_a" value="$(arg initial_pose_a)"/-->
 </include> 
  
   <!--- Run Controller -->
@@ -36,6 +36,13 @@
   <node pkg="collvoid_controller" type="controllerRobots.py" name="controller_robots" output="screen" >
   <remap from="/position_share" to="/turtlebot03/position_share_in"/>
   <remap from="/commands_robot" to="/turtlebot03/commands_robot"/>
+</node>
+  
+  <!--- Run tf controller -->
+  <node pkg="collvoid_simple_global_planner" type="tf_extractor" name="tf_extractor" output="screen">
+  <remap from="/transform_bf_p3" to="/turtlebot03/transform_bf_p3"/>
+  <remap from="/transform_odom_bf" to="/turtlebot03/transform_odom_bf"/>
+  <remap from="/transform_map_odom" to="/turtlebot03/transform_map_odom"/>
 </node>
 
   <!--- Run collvoid -->
@@ -51,6 +58,7 @@
     <remap from="/position_share_out" to="/turtlebot03/position_share_out"/>
     <remap from="/position_share_in" to="/turtlebot03/position_share_in"/>
     <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
+    <remap from="/odom" to="/overhead_odom"/>
   </node>
 
 
