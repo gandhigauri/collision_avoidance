@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
+#include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
@@ -28,6 +29,11 @@ void listen_transform(std::string parent, std::string child)
   }  
 }
 
+void send_transform(std::string parent, std::string child, tf::Transform transform)
+{
+  tf::TransformBroadcaster br;
+  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), parent, child));
+}
 
 void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
 {
@@ -41,6 +47,9 @@ void tf_ob_callback(const geometry_msgs::TransformStamped::ConstPtr &msg)
   odom.child_frame_id = ts.child_frame_id;
   tf::poseTFToMsg(currentTransform, odom.pose.pose);
  
+  //broadcast transform
+  send_transform("/odom","/base_footprint", currentTransform);
+
   //velocity calculation for odom
   tf::Transform diffTransform = prevTransform.inverse() * currentTransform;
   tfScalar diffRoll, diffPitch, diffYaw;
@@ -116,4 +125,3 @@ int main (int argc, char** argv)
     ros::spinOnce();
   }
 }
-
