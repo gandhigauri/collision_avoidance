@@ -1,3 +1,8 @@
+gauri:
+  goals:
+    x: [2.0]
+    y: [2.0]
+    ang: [7.068]
 turtlebot02-cb:
   goals:
     x: [2.0, 1.0, 1.0]

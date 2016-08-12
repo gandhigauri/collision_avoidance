@@ -4,7 +4,6 @@ publishers:
 subscribers:
   - name: position_share_in
     type: collvoid_msgs/PoseTwistWithCovariance
-subscribers:
   - name: commands_robot
     type: std_msgs/String
 services: []
