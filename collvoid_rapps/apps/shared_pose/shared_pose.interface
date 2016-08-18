@@ -3,6 +3,12 @@ publishers:
     type: collvoid_msgs/PoseTwistWithCovariance
   - name: transform_bf_p3
     type: geometry_msgs/TransformStamped
+  - name: me
+    type: visualization_msgs/MarkerArray
+  - name: neighbors
+    type: visualization_msgs/MarkerArray
+  - name: move_base/CollvoidLocalPlanner/global_plan
+    type: nav_msgs/Path
 subscribers:
   - name: position_share_in
     type: collvoid_msgs/PoseTwistWithCovariance
