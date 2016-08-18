@@ -51,6 +51,9 @@
     <remap from="/position_share_out" to="/turtlebot01/position_share_out"/>
     <remap from="/position_share_in" to="/turtlebot01/position_share_in"/>
     <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
+    <remap from="/me" to="/turtlebot01/me"/>
+    <remap from="/neighbors" to="/turtlebot01/neighbors"/>
+    <remap from="/move_base/CollvoidLocalPlanner/global_plan" to="/turtlebot01/move_base/CollvoidLocalPlanner/global_plan"/>
   </node>
 
 
