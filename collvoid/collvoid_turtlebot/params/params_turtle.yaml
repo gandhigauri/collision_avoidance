@@ -1,7 +1,7 @@
 
 CollvoidLocalPlanner:
   holo_robot: false
-  wheel_base: 0.25
+  wheel_base: 0.35
   
   max_vel_x: 0.5
   max_vel_th: 1.5
@@ -16,7 +16,7 @@ CollvoidLocalPlanner:
 
   max_vel_with_obstacles: 0.5
 
-  footprint_radius: 0.20 #was 0.17
+  footprint_radius: 0.30 #was 0.17
 
 TrajectoryPlannerROS:
   max_vel_x: 0.50
@@ -55,9 +55,9 @@ local_costmap:
   map_type: voxel
   obstacle_range: 2.5
   raytrace_range: 3.0
-  robot_radius: 0.19
+  robot_radius: 0.29
   #footprint: [[0.21, 0.21], [-0.21, 0.21], [-0.21, -0.21], [0.21, -0.21]]
-  inflation_radius: 0.20
+  inflation_radius: 0.30
   footprint_padding: 0.01
 
   observation_sources: kinect 
@@ -80,9 +80,9 @@ global_costmap:
 
   obstacle_range: 2.5
   raytrace_range: 3.0
-  robot_radius: 0.18
+  robot_radius: 0.28
   #footprint: [[0.21, 0.21], [-0.21, 0.21], [-0.21, -0.21], [0.21, -0.21]]
-  inflation_radius: 0.22
+  inflation_radius: 0.32
   footprint_padding: 0.01
 
   
