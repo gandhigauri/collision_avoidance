@@ -39,10 +39,10 @@ floorplan
 # throw in a robot
 turtlebot
 (
-  pose [ 0.5 0.6 0.0 0.0 ]
+  pose [ 1 8 0.0 0.0 ]
   name "turtlebot"
   color "black"
 )
 
 #obtacles
-block(pose [ 1.25 1.25 0.0 0.0] color "blue")
+#block(pose [ 1.25 1.25 0.0 0.0] color "blue")

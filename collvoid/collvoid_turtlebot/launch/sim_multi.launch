@@ -1,0 +1,167 @@
+<!-- 
+  Turtlebot navigation simulation:
+  - stage
+  - map_server
+  - move_base
+  - static map
+  - amcl
+  - rviz view
+ -->
+<launch>
+  <arg name="base"       default="$(optenv TURTLEBOT_BASE create)"/>  <!-- create, rhoomba -->
+  <arg name="stacks"     default="$(optenv TURTLEBOT_STACKS circles)"/>  <!-- circles, hexagons -->
+  <arg name="3d_sensor"  default="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>  <!-- kinect, asus_xtion_pro -->
+
+  <!-- Name of the map to use (without path nor extension) and initial position -->
+  <arg name="map_file"       default=" $(find collvoid_turtlebot)/world/my_map.yaml"/> <!-- robopark_plan -->
+  <arg name="world_file"     default=" $(find collvoid_turtlebot)/world/my_map.world"/>
+  <arg name="initial_pose_x" default="1"/>
+  <arg name="initial_pose_y" default="8"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <param name="/use_sim_time" value="true"/>
+  <arg name="robot_name"        default="$(env TURTLEBOT_NAME)"         doc="used as a unique identifier and occasionally to preconfigure root namespaces, gateway/zeroconf ids etc."/>
+  <arg name="robot_type"        default="$(env TURTLEBOT_TYPE)"         doc="just in case you are considering a 'variant' and want to make use of this."/>
+
+  <!--  ******************** Stage ********************  -->
+  <!-- 
+        Publishes transforms:
+          /base_link -> /base_laser
+          /base_footprint -> /base_link (identity)
+          /odom -> base_footprint
+        Publishes topics:
+          /odom : odometry data from the simulated odometry
+          /base_scan : laser data from the simulated laser
+          /base_pose_ground_truth : the ground truth pose
+        Parameters:
+          base_watchdog_timeout : time (s) after receiving the last command on cmd_vel before stopping the robot
+        Args:
+          -g : run in headless mode.
+  --> 
+  <node pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
+    <param name="base_watchdog_timeout" value="0.5"/>
+    <remap from="odom" to="odom"/>
+    <remap from="base_pose_ground_truth" to="base_pose_ground_truth"/>
+    <remap from="cmd_vel" to="mobile_base/commands/velocity"/>
+    <remap from="base_scan" to="scan"/>
+  </node>
+
+  <!--  ***************** Robot Model *****************  -->
+  <include file="$(find turtlebot_bringup)/launch/includes/robot.launch.xml">
+    <arg name="base" value="$(arg base)" />
+    <arg name="stacks" value="$(arg stacks)" />
+    <arg name="3d_sensor" value="$(arg 3d_sensor)" />
+  </include>
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="true"/>
+  </node>
+
+  <!-- Command Velocity multiplexer -->
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+    <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+  </node>
+
+  <!-- Rapp Manager --> 
+  <arg name="rapp_auto_installation"            default="false"  doc="automatically install rapps from the web (not typically used)"/> <!-- http://wiki.ros.org/rocon_app_manager/Tutorials/indigo/Automatic Rapp Installation -->
+  <arg name="rapp_package_whitelist"            default="$(env TURTLEBOT_RAPP_PACKAGE_WHITELIST)" doc="a list of catkin packages that provide rapps to be loaded by the app manager."/>
+  <arg name="rapp_package_blacklist"            default="$(env TURTLEBOT_RAPP_PACKAGE_BLACKLIST)" doc="a list of catkin packages to blacklist from providing rapps."/>
+  <arg name="rapp_preferred_configuration_file" default="$(find turtlebot_bringup)/param/preferred_rapp.yaml" doc="a configuration of preferred rapps"/>
+  <arg name="robot_icon"                        default="turtlebot_bringup/turtlebot2.png"        doc="passed to user interfaces to socialise the turtlebot's appearance"/>
+  <arg name="rapp_verbose"                      default="true" doc="show verbose output from running apps (aka roslaunch --screen)"/>
+
+  <!-- ***************************** Rocon Master Info ************************** -->
+  <arg name="robot_description"                 default="Kick-ass ROS turtle" doc="user friendly robot description."/>
+
+  <!-- Capabilities --> 
+  <arg name="capabilities"                      default="true" doc="start and register an underlying capability server"/>
+  <arg name="capabilities_parameters"           default="$(find turtlebot_bringup)/param/capabilities/defaults_tb2.yaml"  doc="preload the capability server with this configurations" /> <!-- defaults_tb.yaml, defaults_tb2.yaml -->
+  <arg name="capabilities_package_whitelist"    default="[kobuki_capabilities, std_capabilities, turtlebot_capabilities]" doc="register capabilities from these packages only" /> 
+  <arg name="capabilities_blacklist"            default="['std_capabilities/Navigation2D', 'std_capabilities/MultiEchoLaserSensor']" doc="blacklist these specific capabilities from being registered" />
+
+  <!-- Interactions --> 
+  <!-- disable interactions for now. See issue https://github.com/robotics-in-concert/rocon_tools/issues/57--> 
+  <arg name="interactions"      default="false" doc="start an interactions manager"/>
+  <arg name="interactions_list" default="$(env TURTLEBOT_INTERACTIONS_LIST)" doc="a list of filenames that provide interactions specifications."/>
+
+  <!-- Connectivity -->
+  <arg name="robot_unique_name"                 default="true"   doc="postfix a uuid to robot_name to create unique namespaces for rapps (else manually guarantee unique names for multimaster'ing)"/>
+  <arg name="concert_whitelist"                 default="[]"     doc="list of multimaster hubs (concerts) to connect to"/>
+  <arg name="local_machine_only"                default="false"  doc="connect only to multimaster hubs (concerts) on the local machine (testing option)"/>
+  <arg name="concert_watch_period"              default="10"     doc="polling loop for discovering multimaster hubs (concerts)" />
+  <arg name="firewall"                          default="false"  doc="block people from flipping (registering topics) on this master."/> 
+
+  <!-- Rapp Manager Concert Client mode -->
+  <include file="$(find rocon_app_manager)/launch/concert_client.launch">
+
+    <!-- Rapp Manager --> 
+    <arg name="robot_name"                        value="turtlebot01" />
+    <arg name="robot_type"                        value="$(arg robot_type)" />
+    <arg name="robot_icon"                        value="$(arg robot_icon)" />
+    <arg name="rapp_package_whitelist"            value="$(arg rapp_package_whitelist)" />
+    <arg name="rapp_package_blacklist"            value="$(arg rapp_package_blacklist)" />
+    <arg name="rapp_preferred_configuration_file" value="$(arg rapp_preferred_configuration_file)" />
+    <arg name="screen"                            value="$(arg rapp_verbose)" />
+    <arg name="rapp_auto_installation"            value="$(arg rapp_auto_installation)" />
+
+    <!-- Rocon Master Info -->
+    <arg name="robot_description"                 value="$(arg robot_description)" />
+
+    <!-- Capabilities --> 
+    <arg name="capabilities"                      value="$(arg capabilities)" />
+    <arg name="capabilities_blacklist"            value="$(arg capabilities_blacklist)" />
+    <arg name="capabilities_package_whitelist"    value="$(arg capabilities_package_whitelist)" />
+    <arg name="capabilities_parameters"           value="$(arg capabilities_parameters)" />
+
+    <!-- Interactions --> 
+    <arg name="interactions"                      value="$(arg interactions)"/>
+    <arg name="interactions_list"                 value="$(arg interactions_list)"/>
+
+    <!-- Connectivity -->
+    <arg name="firewall"                          value="$(arg firewall)"/>
+    <arg name="robot_unique_name"                 value="false"/>
+    <arg name="concert_watch_period"              value="$(arg concert_watch_period)"/>
+    <arg name="concert_whitelist"                 value="$(arg concert_whitelist)"/>
+    <arg name="local_machine_only"                value="$(arg local_machine_only)"/>
+  </include>
+
+  <!--  ****** Maps *****  -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+    <param name="frame_id" value="/map"/>
+  </node>
+
+ <!--- Run AMCL -->
+  <include file="$(find collvoid_turtlebot)/launch/amcl_turtlebot.launch"> 
+    <arg name="scan_topic" value="scan"/>
+    <arg name="use_map_topic" value="false"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+  <!--- Run Controller -->
+  <rosparam command="load" file="$(find collvoid_controller)/goals.yaml"/>
+  <node pkg="collvoid_controller" type="controllerRobots.py" name="controller_robots" output="screen" >
+  <remap from="/position_share" to="/turtlebot01/position_share_in"/>
+  <remap from="/commands_robot" to="/turtlebot01/commands_robot"/>
+</node>
+
+<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam command="load" file="$(find collvoid_turtlebot)/params/params_turtle.yaml"/>
+<rosparam command="load" file="$(find collvoid_turtlebot)/params/collvoid_config.yaml"/>
+    <param name="base_local_planner" value="collvoid_local_planner/CollvoidLocalPlanner" />
+<param name="base_global_planner" value="collvoid_simple_global_planner/CollvoidSimpleGlobalPlanner"/>
+    <remap from="/position_share_out" to="/turtlebot01/position_share_out"/>
+    <remap from="/position_share_in" to="/turtlebot01/position_share_in"/>
+    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
+    <remap from="/me" to="/turtlebot01/me"/>
+    <remap from="/neighbors" to="/turtlebot01/neighbors"/>
+    <remap from="/move_base/CollvoidLocalPlanner/global_plan" to="/turtlebot01/move_base/CollvoidLocalPlanner/global_plan"/>
+    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
+  </node>
+
+
+
+  <!--  **************** Visualisation ****************  -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_stage)/rviz/robot_navigation.rviz"/>
+</launch>
