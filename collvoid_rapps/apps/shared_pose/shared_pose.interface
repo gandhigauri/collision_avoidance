@@ -9,6 +9,10 @@ publishers:
     type: visualization_msgs/MarkerArray
   - name: move_base/CollvoidLocalPlanner/global_plan
     type: nav_msgs/Path
+  - name: move_base/CollvoidLocalPlanner/local_plan
+    type: nav_msgs/Path
+  - name: move_base/current_goal
+    type: geometry_msgs/PoseStamped
 subscribers:
   - name: position_share_in
     type: collvoid_msgs/PoseTwistWithCovariance
