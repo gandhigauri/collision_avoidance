@@ -54,6 +54,8 @@
     <remap from="/me" to="/turtlebot02/me"/>
     <remap from="/neighbors" to="/turtlebot02/neighbors"/>
     <remap from="/move_base/CollvoidLocalPlanner/global_plan" to="/turtlebot02/move_base/CollvoidLocalPlanner/global_plan"/>
+    <remap from="/move_base/CollvoidLocalPlanner/local_plan" to="/turtlebot02/move_base/CollvoidLocalPlanner/local_plan"/>
+    <remap from="/move_base/current_goal" to="/turtlebot02/move_base/current_goal"/>
     
   </node>
 
