@@ -4,7 +4,9 @@
 	<include file="$(find turtlebot_concert)/solutions/concert.launch"/>
 
         <!--node pkg="turtlebot_behaviors" type="swarm_controller" name="swarm_controller" output="screen"/-->
-
+	
+	<!-- Run the map server -->
+  	<node name="map_server" pkg="map_server" type="map_server" args="$(find collvoid_turtlebot)/world/my_map.yaml" output="screen"/>
 	<rosparam command="load" file="$(find collvoid_turtlebot)/params/robot_ids.yaml" />
 
 	<node pkg="collvoid_local_planner" name="collvoid_sync" output="screen" type="collvoid_sync"/>
