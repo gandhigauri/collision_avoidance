@@ -60,7 +60,7 @@ public:
   		//filtered_cloud = unfiltered_cloud;
   		int cloud_width = unfiltered_cloud.width;
   		int cloud_height = unfiltered_cloud.height;
-		/*int nanpts_unfiltered = 0;
+		int nanpts_unfiltered = 0;
   		for (int iter = 0; iter < (cloud_height*cloud_width); iter++)
   		{	
   			if (std::isnan(unfiltered_cloud.points[iter].x) && std::isnan(unfiltered_cloud.points[iter].y) && std::isnan(unfiltered_cloud.points[iter].z))
@@ -73,13 +73,13 @@ public:
   			ROS_INFO_STREAM("more than 40 percent are invalid pts");
   			base_cmd.angular.z=0.10;
   			velocity_pub.publish(base_cmd);
-  		}*/
-  		if (1)
+  		}
+  		else 
   		{
   			std::vector<int> indices;
   			pcl::removeNaNFromPointCloud(unfiltered_cloud, filtered_cloud, indices);
 		
-  			/*for (int iter = 0; iter < (cloud_height*cloud_width); iter++)
+  			for (int iter = 0; iter < (cloud_height*cloud_width); iter++)
   			{	
   				if (std::isnan(unfiltered_cloud.points[iter].x))
   				{	
@@ -116,7 +116,7 @@ public:
 	  				}
   				}
   			iter++;
-  			}*/
+  			}
   			pcl::toROSMsg(filtered_cloud, published_msg);
   			pointcloud_pub.publish(published_msg);
   		}
